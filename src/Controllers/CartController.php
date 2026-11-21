@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Product;
 use App\PriceCalculator;
 
@@ -9,12 +10,57 @@ class CartController
 {
     private function getCart(): array
     {
+        if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+            return $_SESSION['cart'];
+        }
+
+        try {
+            $cartModel = new CartItem();
+            $user = authUser();
+            $rows = $cartModel->getItems(session_id(), $user ? (int) $user['id'] : null);
+            if (!empty($rows)) {
+                $cart = [];
+                foreach ($rows as $row) {
+                    $cart[$row['cart_key']] = [
+                        'product_id' => (int) $row['product_id'],
+                        'variant_id' => (int) $row['variant_id'],
+                        'quantity'   => (int) $row['quantity'],
+                        'color'      => $row['color'],
+                        'price'      => (int) $row['price'],
+                    ];
+                }
+                $_SESSION['cart'] = $cart;
+                return $cart;
+            }
+        } catch (\Throwable $e) {
+            error_log('getCart DB error: ' . $e->getMessage());
+        }
+
         return $_SESSION['cart'] ?? [];
     }
 
     private function saveCart(array $cart): void
     {
         $_SESSION['cart'] = $cart;
+        try {
+            $cartModel = new CartItem();
+            $user = authUser();
+            $cartModel->syncCart(session_id(), $user ? (int) $user['id'] : null, $cart);
+        } catch (\Throwable $e) {
+            error_log('saveCart DB sync error: ' . $e->getMessage());
+        }
+    }
+
+    public static function clearCart(): void
+    {
+        unset($_SESSION['cart']);
+        try {
+            $cartModel = new CartItem();
+            $user = authUser();
+            $cartModel->clear(session_id(), $user ? (int) $user['id'] : null);
+        } catch (\Throwable $e) {
+            error_log('clearCart DB error: ' . $e->getMessage());
+        }
     }
 
     private function refreshCart(array $cart): array

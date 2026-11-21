@@ -11,7 +11,7 @@ services:
       DB_HOST: db
       DB_DATABASE: ${DOCKER_DB_DATABASE:-shop_hades}
       DB_USERNAME: ${DOCKER_DB_USERNAME:-hades_user}
-      DB_PASSWORD: ${DOCKER_DB_PASSWORD:-hades_local_password}
+      DB_PASSWORD: ${DOCKER_DB_PASSWORD:-hades_password}
     depends_on:
       db:
         condition: service_healthy

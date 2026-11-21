@@ -4,130 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf" content="<?= e(csrf_token()) ?>">
-    <title>Admin - <?= e(config('app_name')) ?> - Quản trị hệ thống</title>
+    <title>Refract Admin - <?= e(config('app_name', 'Hades Academy')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="/css/shop.min.css" rel="stylesheet">
+    <link href="/css/glassy-theme.css" rel="stylesheet">
 </head>
-<body>
-<div class="side-banner left-banner d-none d-xl-block d-print-none">
-    <a href="/?q=iphone">
-        <img src="/image/banner_left.png" alt="Banner Trái">
-    </a>
-</div>
-<div class="side-banner right-banner d-none d-xl-block d-print-none">
-    <a href="/?q=laptop">
-        <img src="/image/banner_right.png" alt="Banner Phải">
-    </a>
-</div>
-<div class="top-promo-banner d-print-none">
-    <a href="/?q=sale">
-        <img src="/image/banner_top.png" alt="Siêu sale Hades">
-    </a>
-</div>
-<div class="top-bar d-print-none">
-    <div class="container d-flex justify-content-between">
-        <span>🔥 Hotline: <a href="tel:<?= e(config('hotline', '18001234')) ?>"><?= e(config('hotline', '1800 1234')) ?></a></span>
-        <span>Miễn phí giao hàng đơn từ 500.000đ | Bảo hành chính hãng</span>
-    </div>
-</div>
+<body class="refract-dashboard-body">
 
-<header class="site-header d-print-none">
-    <div class="container header-inner">
-        <a href="/admin/products" class="logo">
-            <img src="/image/logo.webp" alt="Logo" class="logo-img">
-            <span><?= e(config('app_name')) ?> Admin</span>
-        </a>
-        <div class="d-flex align-items-center ms-auto" style="gap: 16px;">
-            <a href="/admin/profile" class="fw-bold text-dark text-decoration-none hover-underline">👤 Quản trị viên: <?= e(authUser()['name'] ?? 'Admin') ?></a>
-            <a href="/" class="btn btn-sm btn-dark text-white fw-bold">Xem trang chủ</a>
-            <form method="post" action="/logout" class="d-inline">
-                <?= csrf_field() ?>
-                <button type="submit" class="btn btn-sm btn-danger text-white fw-bold">Đăng xuất</button>
-            </form>
+<div class="refract-app-container">
+    <!-- LEFT GLASS SIDEBAR -->
+    <aside class="refract-sidebar">
+        <!-- Brand -->
+        <div class="refract-brand d-flex align-items-center justify-content-between mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <div class="brand-prism-icon">
+                    <i class="bi bi-triangle-half"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Refract</span>
+                    <span class="badge-crm">LMS</span>
+                </div>
+            </div>
+            <a href="/" class="btn-home-link" title="Xem trang chủ học viên">
+                <i class="bi bi-box-arrow-up-right"></i>
+            </a>
         </div>
-    </div>
-</header>
 
-<nav class="category-nav d-print-none">
-    <div class="container d-flex flex-wrap gap-2 py-1">
         <?php
         $uri = $_SERVER['REQUEST_URI'];
         $isActive = fn($path) => str_starts_with($uri, $path) ? 'active' : '';
-        
-        // Query unread message count dynamically
-        $db = \App\DB::connection();
-        $unreadMsgsStmt = $db->query("SELECT COUNT(*) FROM support_messages WHERE sender='user' AND is_read=0");
-        $unreadMsgsCount = (int) ($unreadMsgsStmt ? $unreadMsgsStmt->fetchColumn() : 0);
         ?>
-        <a href="/admin/dashboard" class="<?= ($uri === '/admin' || str_starts_with($uri, '/admin/dashboard')) ? 'active' : '' ?>">📈 Tổng quan</a>
-        <a href="/admin/products" class="<?= $isActive('/admin/products') ?>">📦 Sản phẩm</a>
-        <a href="/admin/categories" class="<?= $isActive('/admin/categories') ?>">🗂️ Danh mục</a>
-        <a href="/admin/inventory" class="<?= $isActive('/admin/inventory') ?>">📊 Tồn kho</a>
-        <a href="/admin/stores" class="<?= $isActive('/admin/stores') ?>">🏪 Cửa hàng</a>
-        <a href="/admin/device-units" class="<?= $isActive('/admin/device-units') ?>">📱 IMEI</a>
-        <a href="/admin/orders" class="<?= $isActive('/admin/orders') ?>">🛒 Đơn hàng</a>
-        <a href="/admin/refunds" class="<?= $isActive('/admin/refunds') ?>">↩ Hoàn tiền</a>
-        <a href="/admin/users" class="<?= $isActive('/admin/users') ?>">👥 Người dùng</a>
-        <a href="/admin/payments" class="<?= $isActive('/admin/payments') ?>">💳 Thanh toán</a>
-        <a href="/admin/promotions" class="<?= $isActive('/admin/promotions') ?>">🎫 Mã coupon</a>
-        <a href="/admin/site-promotions" class="<?= $isActive('/admin/site-promotions') ?>">🎁 Ưu đãi chung</a>
-        <a href="/admin/trade-ins" class="<?= $isActive('/admin/trade-ins') ?>">🔄 Trade-in</a>
-        <a href="/admin/messages" class="<?= $isActive('/admin/messages') ?>">
-            💬 Tin nhắn
-            <?php if ($unreadMsgsCount > 0): ?>
-                <span class="badge bg-danger ms-1" style="font-size: 10px; padding: 3px 6px; border-radius: 50px;"><?= $unreadMsgsCount ?></span>
-            <?php endif; ?>
-        </a>
-        <a href="/admin/warranties" class="<?= $isActive('/admin/warranties') ?>">🛡️ Bảo hành</a>
-        <a href="/admin/audit-logs" class="<?= $isActive('/admin/audit-logs') ?>">🛡️ Nhật ký hệ thống</a>
-        <a href="/admin/profile" class="<?= $isActive('/admin/profile') ?>">⚙️ Hồ sơ</a>
-    </div>
-</nav>
 
-<main class="container py-4">
-    <?php if ($msg = flash('success')): ?>
-        <div class="alert-hades alert-success shadow-sm rounded-3 border-0 d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill fs-5"></i><span><?= e($msg) ?></span></div>
-    <?php endif; ?>
-    <?php if ($msg = flash('error')): ?>
-        <div class="alert-hades alert-danger shadow-sm rounded-3 border-0 d-flex align-items-center gap-2"><i class="bi bi-exclamation-triangle-fill fs-5"></i><span><?= e($msg) ?></span></div>
-    <?php endif; ?>
+        <!-- Navigation Sections -->
+        <div class="sidebar-section">
+            <div class="section-label">WORKSPACE</div>
+            <a href="/admin/lms/dashboard" class="sidebar-nav-item <?= ($uri === '/admin' || str_starts_with($uri, '/admin/lms/dashboard')) ? 'active' : '' ?>">
+                <i class="bi bi-grid-1x2"></i>
+                <span>Overview</span>
+            </a>
+            <a href="/admin/lms/courses" class="sidebar-nav-item <?= $isActive('/admin/lms/courses') ?>">
+                <i class="bi bi-collection-play"></i>
+                <span>Khóa học & Bài học</span>
+            </a>
+            <a href="/admin/lms/quizzes" class="sidebar-nav-item <?= $isActive('/admin/lms/quizzes') ?>">
+                <i class="bi bi-patch-question"></i>
+                <span>Bài kiểm tra</span>
+            </a>
+            <a href="/admin/orders" class="sidebar-nav-item <?= $isActive('/admin/orders') ?>">
+                <i class="bi bi-receipt"></i>
+                <span>Đơn hàng LMS</span>
+            </a>
+        </div>
 
-    <div class="admin-main-wrapper">
-        <?= $content ?? '' ?>
-    </div>
-</main>
+        <div class="sidebar-section">
+            <div class="section-label">PEOPLE & ROLES</div>
+            <a href="/admin/lms/students" class="sidebar-nav-item <?= $isActive('/admin/lms/students') ?>">
+                <i class="bi bi-mortarboard"></i>
+                <span>Học viên</span>
+            </a>
+            <a href="/admin/lms/instructors" class="sidebar-nav-item <?= $isActive('/admin/lms/instructors') ?>">
+                <i class="bi bi-person-video3"></i>
+                <span>Giảng viên</span>
+            </a>
+            <a href="/admin/users" class="sidebar-nav-item <?= $isActive('/admin/users') ?>">
+                <i class="bi bi-people"></i>
+                <span>Tài khoản Users</span>
+            </a>
+            <a href="/admin/lms/certificates" class="sidebar-nav-item <?= $isActive('/admin/lms/certificates') ?>">
+                <i class="bi bi-award"></i>
+                <span>Chứng chỉ QR</span>
+            </a>
+        </div>
 
-<footer class="site-footer d-print-none">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <h5><?= e(config('app_name')) ?></h5>
-                <p>Hệ thống bán lẻ điện thoại, laptop, phụ kiện chính hãng. Giá tốt mỗi ngày.</p>
-            </div>
-            <div class="col-md-4 mb-3">
-                <h5>Quản lý hệ thống</h5>
-                <p>
-                    <a href="/admin/products" class="text-white text-decoration-none">Sản phẩm</a> ·
-                    <a href="/admin/categories" class="text-white text-decoration-none">Danh mục</a> ·
-                    <a href="/admin/orders" class="text-white text-decoration-none">Đơn hàng</a> ·
-                    <a href="/admin/inventory" class="text-white text-decoration-none">Tồn kho</a>
-                </p>
-            </div>
-            <div class="col-md-4 mb-3">
-                <h5>Liên hệ & Hỗ trợ</h5>
-                <p>
-                    Email: huy28072k5@gmail.com<br>
-                    Hotline: <?= e(config('hotline')) ?><br>
-                    <a href="/" class="text-warning text-decoration-none fw-bold">Quay lại Trang chủ</a>
-                </p>
+        <div class="sidebar-section">
+            <div class="section-label">SYSTEM</div>
+            <a href="/admin/audit-logs" class="sidebar-nav-item <?= $isActive('/admin/audit-logs') ?>">
+                <i class="bi bi-shield-check"></i>
+                <span>Audit Logs</span>
+            </a>
+            <a href="/admin/profile" class="sidebar-nav-item <?= $isActive('/admin/profile') ?>">
+                <i class="bi bi-gear"></i>
+                <span>Cài đặt Admin</span>
+            </a>
+        </div>
+
+        <!-- User Profile Pill at Bottom -->
+        <div class="sidebar-user-pill mt-auto pt-3">
+            <div class="d-flex align-items-center gap-2">
+                <div class="user-avatar-circle">
+                    <?= strtoupper(substr(authUser()['name'] ?? 'AD', 0, 2)) ?>
+                </div>
+                <div class="user-info flex-grow-1 overflow-hidden">
+                    <div class="user-name text-truncate"><?= e(authUser()['name'] ?? 'Leah Moreno') ?></div>
+                    <div class="user-role text-truncate">Administrator</div>
+                </div>
+                <form method="post" action="/logout" class="m-0">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn-logout-icon" title="Đăng xuất">
+                        <i class="bi bi-power"></i>
+                    </button>
+                </form>
             </div>
         </div>
-        <hr style="border-color:#444">
-        <p class="text-center mb-0">© <?= date('Y') ?> <?= e(config('app_name')) ?>. All rights reserved.</p>
-    </div>
-</footer>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="refract-main-content">
+        <!-- Top Refract Navigation Bar -->
+        <header class="refract-topbar d-flex align-items-center justify-content-between mb-4">
+            <div class="topbar-greeting">
+                <h4 class="mb-0 fw-bold">Good evening, <?= e(authUser()['name'] ?? 'Admin') ?></h4>
+                <div class="greeting-date"><?= date('l, F j') ?></div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <!-- Search Refract Pill -->
+                <div class="refract-search-pill">
+                    <i class="bi bi-search text-muted me-2"></i>
+                    <input type="text" placeholder="Search or jump to..." class="border-0 bg-transparent text-white" style="outline: none; font-size: 0.85rem;">
+                    <span class="badge-shortcut">⌘K</span>
+                </div>
+
+                <!-- Notification Bell -->
+                <button class="btn-icon-pill" title="Thông báo">
+                    <i class="bi bi-bell"></i>
+                </button>
+
+                <!-- New Action Button (Refract Gradient Orange Pill) -->
+                <a href="/admin/lms/courses/create" class="btn-refract-action">
+                    <i class="bi bi-plus-lg me-1"></i> New course
+                </a>
+
+                <div class="avatar-refract-pill">
+                    <?= strtoupper(substr(authUser()['name'] ?? 'LM', 0, 2)) ?>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        <?php if ($msg = flash('success')): ?>
+            <div class="refract-alert alert-success d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-check-circle-fill"></i>
+                <span><?= e($msg) ?></span>
+            </div>
+        <?php endif; ?>
+        <?php if ($msg = flash('error')): ?>
+            <div class="refract-alert alert-danger d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span><?= e($msg) ?></span>
+            </div>
+        <?php endif; ?>
+
+        <!-- Dynamic Body Page Content -->
+        <div class="refract-body-wrapper">
+            <?= $content ?? '' ?>
+        </div>
+    </main>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/refract-interactive.js"></script>
 </body>
 </html>

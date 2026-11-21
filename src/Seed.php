@@ -324,7 +324,7 @@ class Seed
                     'description' => 'Hiệu năng chip M1 cực khỏe, máy nguyên bản.',
                     'detail' => 'iPad Air 5 cũ phục vụ vẽ đồ họa, ghi chú học tập mượt mà, cảm biến vân tay nhạy bén.',
                     'stock' => 5,
-                    'image' => 'tablet_ipad.png'
+                    'image' => 'tablet_ipad_air.png'
                 ],
 
                 // Nhóm 7: Tablet
@@ -335,7 +335,7 @@ class Seed
                     'description' => 'iPad mỏng nhất lịch sử, chip M4 siêu khủng, màn hình OLED.',
                     'detail' => 'iPad Pro cao cấp nhất của Apple với màn hình Tandem OLED rực rỡ, chip M4 tối ưu hóa hiệu năng làm việc đồ họa 3D.',
                     'stock' => 6,
-                    'image' => 'tablet_ipad.png'
+                    'image' => 'tablet_ipad_pro.png'
                 ],
                 [
                     'category_id' => $catMap['Tablet'],
@@ -344,7 +344,7 @@ class Seed
                     'description' => 'Sức mạnh từ chip M2 mượt mà, hỗ trợ Apple Pencil Pro.',
                     'detail' => 'iPad Air thế hệ mới nâng cấp cấu hình vượt trội đáp ứng tốt mọi công việc đa nhiệm học tập của bạn.',
                     'stock' => 10,
-                    'image' => 'tablet_ipad.png'
+                    'image' => 'tablet_ipad_air.png'
                 ],
                 [
                     'category_id' => $catMap['Tablet'],

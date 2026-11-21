@@ -36,6 +36,22 @@ class PaymentService
 
         $updated = $orderModel->update($orderId, $fields);
 
+        // Tự động kích hoạt ghi danh LMS nếu đơn hàng chứa khóa học
+        try {
+            $db = \App\DB::connection();
+            $stmt = $db->prepare('SELECT course_id FROM order_items WHERE order_id = ? AND course_id IS NOT NULL');
+            $stmt->execute([$orderId]);
+            $courseIds = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            if (!empty($courseIds) && !empty($order['user_id'])) {
+                $enrollModel = new \App\Models\Enrollment();
+                foreach ($courseIds as $cId) {
+                    $enrollModel->enroll((int) $order['user_id'], (int) $cId);
+                }
+            }
+        } catch (\Throwable $e) {
+            error_log('LMS Auto-enroll on markPaid: ' . $e->getMessage());
+        }
+
         if ($sendEmail && $updated && !empty($updated['email'])) {
             $items = self::itemsForEmail($orderModel, $orderId);
             OrderMailer::sendConfirmation($updated, $items);

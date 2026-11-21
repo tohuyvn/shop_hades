@@ -21,7 +21,7 @@ class VnpayController
 
         if (!$order || ($order['payment_method'] ?? '') !== 'vnpay' || ($order['payment_status'] ?? '') === 'paid') {
             flash('error', 'Không tìm thấy đơn hàng cần thanh toán.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $card = $_SESSION['vnpay_card'] ?? config('vnpay.test_card');
@@ -46,7 +46,7 @@ class VnpayController
 
         if (!$order || ($order['payment_method'] ?? '') !== 'vnpay') {
             flash('error', 'Đơn hàng không hợp lệ.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $test = config('vnpay.test_card');
@@ -55,8 +55,10 @@ class VnpayController
         $issueDate = trim($_POST['issue_date'] ?? '');
         $otp = trim($_POST['otp'] ?? '');
 
-        if ($cardNumber !== $test['card_number']) {
-            flash('error', 'Số thẻ không đúng. Dùng thẻ test NCB: ' . $test['card_number']);
+        $testCardNum = $test['card_number'] ?? '9704198526191432198';
+        $validNumbers = [$testCardNum, '9704198526191432', '9704198526191432198'];
+        if (!in_array($cardNumber, $validNumbers, true)) {
+            flash('error', 'Số thẻ không đúng. Dùng thẻ test NCB: ' . $testCardNum);
             redirect('/payment/vnpay/pay');
         }
 
@@ -120,7 +122,7 @@ class VnpayController
 
         if (!$order || ($order['payment_method'] ?? '') !== 'vnpay') {
             flash('error', 'Không tìm thấy đơn hàng cần thanh toán.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $bankCode = config('vnpay.default_bank_code', 'NCB');
@@ -139,12 +141,12 @@ class VnpayController
 
         if (!Vnpay::verifyReturn($input)) {
             flash('error', 'Xác thực thanh toán VNPay thất bại.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         if (($input['vnp_ResponseCode'] ?? '') !== '00') {
             flash('error', 'Thanh toán VNPay không thành công.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $txnRef = explode('_', $input['vnp_TxnRef'] ?? '')[0];

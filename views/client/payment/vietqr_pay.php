@@ -24,21 +24,16 @@ $orderId = (int) ($order['id'] ?? 0);
                 </p>
             </div>
 
-            <?php if ($autoConfirm): ?>
-            <div id="vietqr-watch" class="alert alert-info d-flex align-items-center gap-3 mb-4 p-3 shadow-sm rounded-3" role="status">
-                <span class="spinner-border spinner-border-sm text-primary flex-shrink-0" aria-hidden="true" style="width: 1.5rem; height: 1.5rem;"></span>
+            <div id="vietqr-watch" class="alert alert-warning d-flex align-items-center gap-3 mb-4 p-3 shadow-sm rounded-3" role="status">
+                <span class="spinner-border spinner-border-sm text-warning flex-shrink-0" aria-hidden="true" style="width: 1.5rem; height: 1.5rem;"></span>
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-center mb-1">
-                        <strong class="text-dark"><i class="bi bi-shield-check text-success me-1"></i>Đang kiểm tra & đối soát thanh toán tự động...</strong>
-                        <span class="badge bg-danger fs-6 px-3 py-1 rounded-pill">Tự động sau <span id="vietqr-countdown">5</span>s</span>
+                        <strong class="text-dark"><i class="bi bi-hourglass-split text-warning me-1"></i> Đang chờ thanh toán chuyển khoản...</strong>
+                        <span class="badge bg-secondary fs-6 px-3 py-1 rounded-pill"><i class="bi bi-arrow-repeat me-1"></i> Tự động kiểm tra</span>
                     </div>
-                    <div class="small text-muted mb-0">Hệ thống đang kết nối ngân hàng. Sau khi nhận được tiền, trang sẽ tự động chuyển sang <em>Thanh toán thành công</em>.</div>
-                    <div class="progress mt-2" style="height: 6px;">
-                        <div id="vietqr-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 0%;"></div>
-                    </div>
+                    <div class="small text-muted mb-0">Hệ thống liên tục kiểm tra tài khoản MB Bank. Sau khi bạn chuyển khoản thành công, trang sẽ tự động ghi nhận và kích hoạt khóa học.</div>
                 </div>
             </div>
-            <?php endif; ?>
 
             <div class="row align-items-center g-4">
                 <div class="col-md-5 text-center">
@@ -192,27 +187,14 @@ function copyText(id) {
         }
     }
 
-    // Countdown & Progress bar animation
-    const countdownTimer = setInterval(function () {
+    // Kiểm tra định kỳ trạng thái thanh toán từ ngân hàng mỗi 2 giây
+    const pollTimer = setInterval(function () {
         if (stopped) {
-            clearInterval(countdownTimer);
+            clearInterval(pollTimer);
             return;
         }
-
-        secondsLeft--;
-        if (countdownEl) countdownEl.textContent = Math.max(0, secondsLeft);
-        if (progressEl) {
-            const pct = Math.min(100, Math.round(((5 - secondsLeft) / 5) * 100));
-            progressEl.style.width = pct + '%';
-        }
-
         poll();
-
-        if (secondsLeft <= 0) {
-            clearInterval(countdownTimer);
-            triggerAutoConfirm();
-        }
-    }, 1000);
+    }, 2000);
 
     const sim = document.getElementById('vietqr-simulate');
     if (sim) {

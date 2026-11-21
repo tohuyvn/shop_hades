@@ -1,238 +1,205 @@
-# Shop Hades — Hướng dẫn Cấu hình & Khởi chạy (Local & Public)
+# 🎓 Hades Academy LMS — Hệ Thống Đào Tạo & Khóa Học Trực Tuyến
 
-Chào mừng bạn đến với **Shop Hades** – Hệ thống thương mại điện tử chuyên nghiệp được phát triển trên nền tảng PHP thuần tối ưu hóa SEO và bảo mật.
+[![PHP](https://img.shields.io/badge/PHP-8.2%2B-777bb4?style=flat-square&logo=php&logoColor=white)](https://www.php.net/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479a1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-7952b3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
----
-
-## 📌 Lưu Ý Quan Trọng Trước Khi Chạy
-Để tránh các lỗi thường gặp, vui lòng đảm bảo:
-1. **Thư mục làm việc (CWD):** Luôn mở Terminal tại thư mục gốc của dự án:
-   ```bash
-   cd /home/huytq/Documents/btvn/btvn
-   ```
-2. **Không chạy lệnh `php -S` đơn luồng thủ công:** 
-   Hệ thống sử dụng cơ chế Server-Sent Events (SSE) để duy trì chat hỗ trợ trực tuyến và theo dõi đơn hàng thời gian thực. Nếu chạy đơn luồng, cả website sẽ bị **lag/treo** hoàn toàn. Luôn chạy qua các script được viết sẵn dưới đây.
+**Hades Academy LMS** là nền tảng quản lý đào tạo & học tập trực tuyến (Learning Management System) toàn diện, hiện đại. Dự án được xây dựng trên nền tảng **PHP MVC thuần** tối ưu hóa hiệu năng, tích hợp giao diện **Refract Glassmorphism (Glassy Dashboard v31)** sang trọng, hỗ trợ đa cổng thanh toán (VNPay, MoMo, VietQR MB Bank) và phòng học trực tuyến đầy đủ tính năng.
 
 ---
 
-## 🛠️ Cấu Hình Ban Đầu
+## 🌟 Tính Năng Nổi Bật
 
-1. **Khởi tạo file môi trường `.env`:**
-   Nếu chưa có file `.env`, tạo mới từ file template:
-   ```bash
-   cp .env.example .env
-   ```
-   *Cấu hình thông tin kết nối Cơ sở dữ liệu (`DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`) trong `.env` cho khớp với hệ thống của bạn.*
+### 1. Phân hệ Học viên (Learner / Student)
+- **Catalog Khóa Học**: Tìm kiếm, lọc theo chuyên ngành (Lập trình, AI & Data, UI/UX, Cloud DevOps, Marketing,...), cấp độ và học phí.
+- **Phòng Học Trực Tuyến (LMS Player)**:
+  - Video Player đồng bộ tiến độ học từng giây, tự động đánh dấu bài học hoàn thành.
+  - **Ghi chú thông minh (Video Timestamped Notes)**: Gắn ghi chú trực tiếp theo mốc thời gian của bài giảng, click là tua video đến đoạn tương ứng.
+  - **Hỏi đáp & Thảo luận (Q&A)**: Trao đổi trực tiếp dưới bài giảng cùng giảng viên và bạn học.
+  - **Nhắc nhở học tập (Checkpoint 15 Phút)**: Cơ chế Spaced Repetition kích hoạt pop-up nhắc làm bài kiểm tra củng cố kiến thức sau mỗi 15 phút học.
+  - **Tài liệu đính kèm**: Xem và tải Slide bài giảng, mã nguồn, tài liệu PDF.
+- **Hệ Thống Kiểm Tra Trắc Nghiệm (Quiz Engine)**:
+  - Bộ đếm ngược thời gian làm bài, trộn ngẫu nhiên câu hỏi.
+  - Tự động chấm điểm, hiển thị đáp án và giải thích chi tiết.
+- **Chứng chỉ Tự Động (QR Verified Certificate)**:
+  - Cấp chứng chỉ điện tử khi hoàn thành 100% khóa học.
+  - Mã QR động chống giả mạo, cho phép quét tra cứu công khai trực tiếp.
 
-2. **Cài đặt thư viện dependencies:**
-   ```bash
-   composer install
-   ```
+### 2. Cổng Thanh Toán Đa Kênh (Fintech Integrations)
+- **VNPay Sandbox**: Giao diện Refract Glassy thẻ ATM mô phỏng Napas 247, xác thực OTP 3D-Secure có timer đếm ngược và nút tự điền OTP test.
+- **MoMo Sandbox**: Quét mã QR code thanh toán hoặc mở ứng dụng MoMo thử nghiệm.
+- **VietQR MB Bank**: Tự động sinh mã VietQR chuẩn NAPAS 247, tự động kiểm tra trạng thái kích hoạt khóa học tức thì.
+
+### 3. Phân hệ Giảng viên & Quản trị (Instructor / Admin)
+- **Curriculum Builder**: Kéo thả, xây dựng giáo trình khóa học theo Chương (Sections) và Bài học (Lessons).
+- **Quản lý Video & Tài liệu**: Hỗ trợ streaming video từ Cloud/Local, cấu hình bài học thử (`is_preview`).
+- **Ngân hàng Câu hỏi & Đề thi**: Soạn thảo trắc nghiệm nhiều lựa chọn, điểm sàn qua môn (Passing Score).
+- **Thống kê & Doanh thu**: Báo cáo học viên ghi danh, tỷ lệ hoàn thành, đơn hàng thanh toán.
 
 ---
 
-## 🚀 1. Khởi Chạy Local (Không Bị Lag)
+## 📌 Yêu Cầu Môi Trường
 
-Chúng ta sử dụng XAMPP PHP tích hợp sẵn đầy đủ các extension để khởi chạy server local kèm theo cấu hình **10 luồng xử lý đồng thời (`PHP_CLI_SERVER_WORKERS=10`)** để ngăn hiện tượng nghẽn do kết nối SSE:
+- **PHP**: `>= 8.2` (yêu cầu các extension: `pdo_mysql`, `curl`, `mbstring`, `openssl`, `gd`)
+- **Web Server**: Apache / Nginx hoặc PHP Built-in Server có worker đa luồng
+- **MySQL / MariaDB**: `>= 8.0`
+- **Composer**: `>= 2.0`
 
+---
+
+## 🛠️ Cài Đặt & Cấu Hình
+
+### Bước 1: Clone dự án & Cài đặt dependencies
 ```bash
-# Phân quyền thực thi nếu cần
-chmod +x start.sh
+git clone git@github.com:tohuyvn/quan_li_khoa_hoc.git
+cd quan_li_khoa_hoc/btvn
+composer install
+```
 
-# Khởi chạy server local
+### Bước 2: Cấu hình Môi trường `.env`
+Sao chép file cấu hình mẫu và cập nhật thông số kết nối Database:
+```bash
+cp .env.example .env
+```
+Chỉnh sửa các biến môi trường trong `.env`:
+```env
+APP_NAME="Hades Academy"
+APP_ENV=local
+APP_BASE_URL=http://127.0.0.1:8000
+
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=shop_hades
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### Bước 3: Khởi tạo Cơ sở Dữ liệu
+Import schema hoàn chỉnh của hệ thống LMS:
+```bash
+mysql -u root -p shop_hades < ../lms_complete_backup.sql
+```
+*(Hoặc import file `lms_complete_backup.sql` trực tiếp từ giao diện phpMyAdmin).*
+
+---
+
+## 🚀 Khởi Chạy Hệ Thống
+
+> [!IMPORTANT]
+> **Không chạy lệnh `php -S 127.0.0.1:8000` đơn luồng thủ công!**  
+> Hệ thống sử dụng Server-Sent Events (SSE) để theo dõi tiến độ và giao tiếp real-time. Chạy đơn luồng sẽ khiến server bị nghẽn/treo. Hãy sử dụng các script đa luồng bên dưới:
+
+### Cách 1: Chạy Local Đa Luồng (Khuyên Dùng)
+Sử dụng script khởi chạy với **10 luồng xử lý đồng thời (`PHP_CLI_SERVER_WORKERS=10`)**:
+```bash
+chmod +x start.sh
 ./start.sh
 ```
-* **Địa chỉ truy cập:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-* **Trang Admin:** [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin/login)
+- **Trang chủ LMS:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **Đăng nhập Quản trị:** [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin/login)
+- **Kiểm tra sức khỏe hệ thống:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
 
 ---
 
-## 🌐 2. Khởi Chạy Public (Dùng Cho Thanh Toán MoMo / VNPay Webhook)
+### Cách 2: Khởi Chạy Public (Kiểm Thử Webhook VNPay / MoMo)
+Để nhận IPN/Callback thanh toán từ Internet, dự án hỗ trợ các tunnel tự động:
 
-Để kiểm thử chức năng thanh toán trực tuyến (Momo Sandbox, VNPay) hoặc nhận phản hồi kết quả giao dịch (IPN/Callback), server local cần phải được đưa ra môi trường Internet công cộng (Public URL). Dự án đã tích hợp sẵn 3 phương án tự động cập nhật cấu hình cấu hình URL vào file `.env`:
-
-### Phương án A: Sử dụng Cloudflare Tunnel (Khuyên dùng - Ổn định & Miễn phí)
-*Yêu cầu máy đã cài đặt tiện ích `cloudflared`.*
+#### Phương án A: Cloudflare Tunnel (Miễn phí & Tự động cập nhật `.env`)
 ```bash
 chmod +x start-cloudflare.sh
 ./start-cloudflare.sh
 ```
-* **Cách hoạt động:** Script sẽ tự tạo một tunnel ngẫu nhiên (ví dụ: `https://xxxx.trycloudflare.com`), tự động backup file `.env` và cập nhật các cấu hình callback URL MoMo/VNPay thành link public này. Khi bạn nhấn `Ctrl + C` để tắt, script sẽ tự động khôi phục lại file `.env` ban đầu.
+*Script sẽ tự động khởi tạo URL `https://xxxx.trycloudflare.com`, backup `.env`, điền URL callback thanh toán và tự hoàn tác khi bạn tắt (`Ctrl + C`).*
 
-### Phương án B: Sử dụng ngrok (Có Domain Cố Định)
-*Yêu cầu máy đã cài đặt `ngrok`.*
+#### Phương án B: ngrok (Domain cố định)
 ```bash
 chmod +x start-public.sh
 ./start-public.sh
 ```
-* **Địa chỉ public:** Sử dụng domain được cấu hình cố định trong script: `https://dividend-stack-trustee.ngrok-free.dev/`
-
-### Phương án C: Sử dụng localhost.run (Không cần cài đặt thêm)
-*Chỉ yêu cầu Terminal hỗ trợ kết nối SSH.*
-```bash
-chmod +x start-localhost-run.sh
-./start-localhost-run.sh
-```
-* **Cách hoạt động:** Kết nối tunnel thông qua SSH port forwarding trực tiếp từ localhost.run. Nhấn `yes` nếu SSH hỏi xác nhận vân tay máy chủ lần đầu.
 
 ---
 
-## 🐳 3. Khởi Chạy & Public Bằng Docker (Tự động & Tối ưu)
-
-Hệ thống được cấu hình sẵn môi trường Docker với PHP-FPM, Nginx, MySQL và tự động tích hợp sẵn **Cloudflare Tunnel** giúp public website ra internet chỉ bằng một lệnh duy nhất mà không cần cài đặt gì thêm ở máy host.
-
-### Bước 0: Cài Docker trên Ubuntu 24.04 (nếu máy chưa có)
-
-Nếu Terminal báo `Command 'docker' not found`, cài Docker Engine và Docker Compose Plugin từ kho chính thức của Docker:
+### Cách 3: Chạy Toàn Bộ Qua Docker & Docker Compose
+Hệ thống đóng gói sẵn PHP-FPM 8.2, Nginx, MySQL 8.0 và Cloudflare Tunnel:
 
 ```bash
-sudo apt update
-sudo apt install -y ca-certificates curl
-
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
-  -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-echo "Types: deb
-URIs: https://download.docker.com/linux/ubuntu
-Suites: noble
-Components: stable
-Architectures: $(dpkg --print-architecture)
-Signed-By: /etc/apt/keyrings/docker.asc" \
-| sudo tee /etc/apt/sources.list.d/docker.sources
-
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io \
-  docker-buildx-plugin docker-compose-plugin
-```
-
-Kiểm tra sau khi cài:
-
-```bash
-sudo docker --version
-sudo docker compose version
-```
-
-Xem thêm: [Hướng dẫn cài Docker Engine trên Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
-
-### Chạy nhanh mỗi lần sử dụng
-
-Sau khi đã cài Docker và khởi tạo dự án lần đầu, mỗi lần muốn chạy website local kèm link public, chỉ cần:
-
-```bash
-cd /home/huytq/Documents/btvn/btvn
-sudo docker compose up -d
-```
-
-Truy cập website local tại [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
-
-Cloudflare Tunnel được chạy tự động cùng hệ thống. Lấy URL public bằng lệnh:
-
-```bash
-sudo docker compose logs tunnel \
-  | grep -Eo 'https://[-a-z0-9]+\.trycloudflare\.com' \
-  | tail -n 1
-```
-
-Kết quả sẽ là URL có dạng `https://xxxx.trycloudflare.com`. URL này có thể thay đổi sau mỗi lần tắt và chạy lại tunnel; nếu sử dụng MoMo/VNPay, hãy cập nhật URL mới trong `.env`.
-
-> **Lưu ý:** Khi `sudo` yêu cầu mật khẩu, nhập mật khẩu đăng nhập Ubuntu. Terminal sẽ không hiển thị ký tự trong lúc nhập; đây là hành vi bình thường.
-
-Khi không dùng nữa, tắt hệ thống:
-
-```bash
-sudo docker compose down
-```
-
-Chỉ thêm `--build` khi chạy lần đầu hoặc sau khi thay đổi `Dockerfile`/dependencies:
-
-```bash
+# Khởi động toàn bộ container
 sudo docker compose up -d --build
-```
 
-Lệnh migration database chỉ cần chạy trong lần khởi tạo đầu tiên:
-
-```bash
+# Chạy migration dữ liệu (trong lần đầu)
 sudo docker compose exec app php scripts/migrate.php
+
+# Xem public URL tạo bởi tunnel
+sudo docker compose logs tunnel | grep -Eo 'https://[-a-z0-9]+\.trycloudflare\.com' | tail -n 1
 ```
 
-### Bước 1: Khởi chạy các container Docker
-Chạy lệnh sau tại thư mục gốc dự án:
-```bash
-cd /home/huytq/Documents/btvn/btvn
-sudo docker compose up -d --build
-```
-
-### Bước 2: Khởi tạo database và dữ liệu mẫu
-
-```bash
-sudo docker compose exec app php scripts/migrate.php
-```
-
-Nếu MySQL vừa khởi động và chưa sẵn sàng, chờ vài giây rồi chạy lại lệnh trên.
-
-Sau khi migration hoàn tất, truy cập:
-
-* **Trang chủ:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-* **Trang Admin:** [http://127.0.0.1:8000/admin/login](http://127.0.0.1:8000/admin/login)
-* **Health check:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
-
-### Bước 3: Lấy URL public để cấu hình
-Khi các container đã khởi động, Cloudflare Tunnel sẽ tự động tạo một public URL ngẫu nhiên. Hãy xem log để lấy URL này:
-```bash
-sudo docker compose logs tunnel
-```
-Tìm dòng có URL đuôi `.trycloudflare.com` (ví dụ: `https://xxxx.trycloudflare.com`).
-
-### Bước 4: Cập nhật cấu hình `.env`
-Mở file `.env` ở máy host và cập nhật biến `APP_BASE_URL` cùng các link callback thanh toán bằng URL vừa lấy được để các dịch vụ MoMo / VNPay có thể gửi phản hồi webhook về máy của bạn:
-```env
-APP_BASE_URL=https://xxxx.trycloudflare.com
-VNPAY_RETURN_URL=https://xxxx.trycloudflare.com/payment/vnpay/return
-MOMO_REDIRECT_URL=https://xxxx.trycloudflare.com/payment/momo/return
-MOMO_IPN_URL=https://xxxx.trycloudflare.com/payment/momo/callback
-```
-*(Do thư mục code được mount trực tiếp vào container nên mọi thay đổi ở file `.env` trên máy host sẽ được áp dụng ngay lập tức mà không cần khởi động lại Docker).*
-
-### Bước 5: Tắt hệ thống Docker
-Khi không cần sử dụng nữa, bạn có thể tắt và dọn dẹp các tài nguyên Docker bằng lệnh:
+Để tắt hệ thống Docker:
 ```bash
 sudo docker compose down
 ```
 
 ---
 
-## 🧪 4. Chạy Kiểm Thử Hệ Thống (Tests)
+## 🧪 Kiểm Thử Hệ Thống (Testing)
 
-Để đảm bảo toàn bộ logic đơn hàng, hoàn tiền, ví và voucher hoạt động ổn định trước khi triển khai, hãy chạy bộ kiểm thử PHPUnit bằng PHP của XAMPP:
+Dự án có bộ test tự động kiểm tra toàn bộ luồng nghiệp vụ LMS (Khóa học, Ghi danh, Thanh toán, Tiến độ học, Quiz, Cấp chứng chỉ):
 
 ```bash
-/opt/lampp/bin/php vendor/bin/phpunit
+# Chạy PHPUnit
+vendor/bin/phpunit
 ```
 
 ---
 
-## 🔎 5. Health Check Nhanh
+## 🔑 Tài Khoản Mẫu Trải Nghiệm (Demo Accounts)
 
-Sau khi chạy web, có thể kiểm tra nhanh tình trạng app và database tại:
-
-```bash
-curl http://127.0.0.1:8000/health
-```
-
-* `200 OK`: App và DB đang sẵn sàng.
-* `503 Service Unavailable`: Web đã khởi động nhưng DB chưa sẵn sàng hoặc cấu hình DB chưa đúng.
+| Vai trò | Email đăng nhập | Mật khẩu | Quyền hạn |
+| :--- | :--- | :--- | :--- |
+| **Quản trị viên (Admin)** | `admin@shop.test` | `admin123` | Quản trị toàn hệ thống, khóa học, doanh thu |
+| **Giảng viên (Instructor)** | `instructor@shop.test` | `instructor123` | Soạn giáo trình, tạo đề thi, quản lý bài giảng |
+| **Học viên (Student)** | `user@shop.test` | `user123` | Mua khóa học, xem bài giảng, làm bài test |
 
 ---
 
-## 📂 Danh Sách Tài Khoản Thử Nghiệm
+## 💳 Thông Tin Thẻ Test Sandbox
 
-Hệ thống được khởi tạo sẵn các tài khoản demo sau (nếu dữ liệu được import từ `shop_hades.sql`):
+### Cổng VNPay Sandbox
+- **Ngân hàng:** `NCB`
+- **Số thẻ:** `9704198526191432`
+- **Tên chủ thẻ:** `NGUYEN VAN A`
+- **Ngày phát hành:** `07/15`
+- **Mã OTP:** `123456`
 
-* **Tài khoản Admin (Quản trị viên):**
-  * Email: `admin@shop.test`
-  * Mật khẩu: `admin123`
-* **Tài khoản Customer (Khách hàng):**
-  * Email: `user@shop.test`
-  * Mật khẩu: `user123`
+---
+
+## 📂 Cấu Trúc Dự Án (Architecture)
+
+```text
+btvn/
+├── config/              # File cấu hình ứng dụng, DB, cổng thanh toán
+├── docker/              # Cấu hình Nginx, PHP-FPM và Dockerfile
+├── public/              # Document Root công khai (CSS, JS, Images, index.php)
+│   ├── css/             # Glassy theme v31, Bootstrap, Refract custom styles
+│   └── index.php        # Entry point duy nhất điều hướng Request
+├── routes/              # Khai báo định tuyến (web.php, api.php)
+├── scripts/             # Script CLI migration, import database
+├── src/                 # Mã nguồn backend (MVC Pattern)
+│   ├── Controllers/     # Điều hướng logic (Admin, Client, LMS, API)
+│   ├── Middlewares/     # Bộ lọc phân quyền (Auth, Admin, CSRF, RateLimit)
+│   ├── Models/          # Tương tác CSDL (Course, Lesson, Quiz, Order, User)
+│   └── Services/        # Dịch vụ tích hợp (VNPay, MoMo, VietQR, Certificate)
+├── tests/               # Bộ kiểm thử tự động Feature & Unit Test
+├── views/               # Giao diện Blade-style PHP Views
+│   ├── admin/           # Phân hệ quản trị (LMS, Doanh thu, User)
+│   ├── client/          # Phân hệ học viên (Catalog, Checkout, Classroom)
+│   └── layouts/         # Layout chính (Refract Glassy Sidebar)
+├── .env.example         # File cấu hình môi trường mẫu
+├── composer.json        # Định nghĩa thư viện & PSR-4 Autoloading
+└── start.sh             # Script khởi động server local tối ưu đa luồng
+```
+
+---
+
+## 📄 Bản Quyền & Giấy Phép
+Phát triển và bảo trì bởi đội ngũ **Hades Academy**. Phát hành theo giấy phép [MIT License](LICENSE).

@@ -294,7 +294,7 @@ class CheckoutController
                 array_values($cart)
             );
 
-            unset($_SESSION['cart']);
+            CartController::clearCart();
             $_SESSION['pending_vietqr_order_id'] = $order['id'];
             $_SESSION['last_order_id'] = $order['id'];
             redirect('/payment/vietqr/pay');
@@ -332,7 +332,7 @@ class CheckoutController
                 array_values($cart)
             );
 
-            unset($_SESSION['cart']);
+            CartController::clearCart();
             $_SESSION['last_order_id'] = $order['id'];
             flash('success', "Đã gửi hồ sơ trả góp {$months} tháng. Đặt cọc dự kiến: " . formatMoney($deposit) . '. Chờ admin duyệt.');
             redirect('/orders/success');
@@ -369,7 +369,7 @@ class CheckoutController
             array_values($cart)
         );
 
-        unset($_SESSION['cart']);
+        CartController::clearCart();
         $_SESSION['last_order_id'] = $order['id'];
         redirect('/orders/success');
     }

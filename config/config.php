@@ -80,7 +80,7 @@ return [
         ],
         'test_card' => [
             'bank' => 'NCB',
-            'card_number' => '9704198526191432198',
+            'card_number' => '9704198526191432',
             'cardholder' => 'NGUYEN VAN A',
             'issue_date' => '07/15',
             'otp' => '123456',

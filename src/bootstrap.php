@@ -38,7 +38,8 @@ if (empty($_SESSION['_csrf'])) {
     $_SESSION['_csrf'] = bin2hex(random_bytes(32));
 }
 
-$config = require BASE_PATH . '/config/config.php';
+$GLOBALS['config'] = require BASE_PATH . '/config/config.php';
+$config = $GLOBALS['config'];
 
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';
@@ -217,6 +218,28 @@ function authenticate_session(array $user): void
 function formatMoney(int|float $amount): string
 {
     return number_format((float) $amount, 0, ',', '.') . ' đ';
+}
+
+function formatVideoEmbedUrl(?string $url, int $startSec = 0): string
+{
+    $url = trim((string) $url);
+    if ($url === '') {
+        return 'https://www.youtube.com/embed/f02mOEt11OQ?enablejsapi=1' . ($startSec > 0 ? "&start={$startSec}" : '');
+    }
+
+    if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i', $url, $matches)) {
+        $ytId = $matches[1];
+        if ($ytId === 'dQw4w9WgXcQ') {
+            $ytId = 'f02mOEt11OQ';
+        }
+        $embed = "https://www.youtube.com/embed/{$ytId}?enablejsapi=1";
+        if ($startSec > 0) {
+            $embed .= "&start={$startSec}";
+        }
+        return $embed;
+    }
+
+    return $url;
 }
 
 function e(?string $value): string

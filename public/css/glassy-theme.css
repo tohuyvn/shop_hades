@@ -1,0 +1,871 @@
+/* ==========================================================================
+   REFRACT / GLASSY DASHBOARD V31 THEME
+   Exact Liquid Glassmorphism with Chromatic Dispersion & Interior Room Backdrop
+   Inspired by Codexr UI "Refract" (Glassy Dashboard v31)
+   ========================================================================== */
+
+:root {
+  --refract-bg-tint: rgba(28, 28, 30, 0.48);
+  --refract-card-bg: rgba(24, 25, 32, 0.52);
+  --refract-card-border: rgba(255, 255, 255, 0.22);
+  --refract-bevel-highlight: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --refract-bevel-shadow: inset 0 -2px 3px 0 rgba(0, 0, 0, 0.45);
+  --refract-drop-shadow: 0 18px 45px -8px rgba(0, 0, 0, 0.55), 0 6px 16px -4px rgba(0, 0, 0, 0.4);
+  --refract-blur: blur(28px);
+  --refract-text-main: #f8fafc;
+  --refract-text-sub: #cbd5e1;
+  --refract-text-muted: #94a3b8;
+  --refract-accent-orange: #ff6a00;
+  --refract-accent-coral: #ee0979;
+  --refract-gradient-pill: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+  --refract-chromatic: 
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 1px 2px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.4),
+    0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* 1. Real Study Desk Motivation Backdrop */
+body {
+  background-color: #1a1614 !important;
+  background-image: 
+    linear-gradient(rgba(18, 16, 22, 0.42), rgba(18, 16, 22, 0.62)),
+    url('/image/study_desk_bg.png') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  color: var(--refract-text-main) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", Roboto, sans-serif !important;
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+}
+
+/* 2. Frosted Header & Topbars */
+.site-header {
+  background: rgba(18, 20, 28, 0.55) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.top-bar, .top-promo-banner {
+  background: rgba(12, 14, 20, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--refract-text-sub) !important;
+}
+
+/* 3. Navigation with Liquid Glass Refraction Pills */
+.category-nav {
+  background: rgba(16, 18, 26, 0.48) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 10px 0 !important;
+}
+
+.category-nav a {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  padding: 7px 18px !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.category-nav a:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+.category-nav a.active, .category-nav a.category-nav-highlight {
+  background: var(--refract-gradient-pill) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+/* 4. The Iconic Glass Cards (Chromatic Refraction Borders) */
+.card, 
+.glass-panel,
+.admin-main-wrapper,
+.search-keywords-card,
+.site-footer {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Rainbow / Prismatic Edge Refraction Simulation */
+.card::before, .glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 106, 0, 0.6) 20%, 
+    rgba(255, 255, 255, 0.8) 50%, 
+    rgba(0, 229, 255, 0.6) 80%, 
+    transparent 100%
+  );
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.card:hover {
+  background: rgba(30, 32, 42, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.28),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.6),
+    0 20px 48px -10px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(255, 106, 0, 0.2) !important;
+}
+
+/* 5. Inputs & Buttons in Refract Style */
+.form-control, .form-select, .search-box input {
+  background: rgba(15, 17, 24, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(14px) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35) !important;
+}
+
+.form-control:focus, .form-select:focus, .search-box input:focus {
+  background: rgba(18, 20, 30, 0.8) !important;
+  border-color: var(--refract-accent-orange) !important;
+  box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary, .btn-buy, .btn-glow {
+  background: var(--refract-gradient-pill) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  padding: 8px 22px !important;
+  box-shadow: 0 6px 18px rgba(255, 106, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.22s ease !important;
+}
+
+.btn-primary:hover, .btn-buy:hover, .btn-glow:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 8px 26px rgba(255, 106, 0, 0.55), inset 0 1.5px 2px rgba(255, 255, 255, 0.7) !important;
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #f1f5f9 !important;
+  border-radius: 9999px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.btn-outline-primary:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 6. Refract Glass Table */
+.table {
+  color: #f1f5f9 !important;
+  background: transparent !important;
+}
+
+.table thead th {
+  background: rgba(12, 14, 20, 0.7) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--refract-accent-orange) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 0.78rem !important;
+}
+
+.table tbody tr {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Metric / Stat Boxes */
+.bg-white {
+  background: var(--refract-card-bg) !important;
+}
+
+.text-dark {
+  color: #f8fafc !important;
+}
+
+.text-muted {
+  color: #94a3b8 !important;
+}
+
+.bg-primary-subtle { background-color: rgba(255, 106, 0, 0.18) !important; color: #ff8c38 !important; }
+.bg-info-subtle    { background-color: rgba(0, 229, 255, 0.18) !important; color: #38e1ff !important; }
+.bg-success-subtle { background-color: rgba(34, 197, 94, 0.18) !important; color: #4ade80 !important; }
+.bg-warning-subtle { background-color: rgba(234, 179, 8, 0.18) !important; color: #facc15 !important; }
+
+/* Breadcrumb & Tags */
+.breadcrumb {
+  background: rgba(20, 22, 30, 0.55) !important;
+  padding: 8px 18px !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+.breadcrumb a {
+  color: #ff8c38 !important;
+}
+
+.keyword-tag {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  padding: 6px 16px !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.2s ease !important;
+}
+
+.keyword-tag:hover {
+  background: var(--refract-gradient-pill) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(255, 106, 0, 0.4) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Refract Minimal Navbar Styling */
+.nav-pill-link {
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+}
+
+.nav-pill-link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.nav-pill-link.active {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+}
+
+.user-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(12px) !important;
+  transition: all 0.2s ease !important;
+}
+
+.user-pill:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.site-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(20, 22, 30, 0.65) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+}
+
+/* ==========================================================================
+   REFRACT DASHBOARD V31 - FULL APP LAYOUT & PILL COMPONENTS
+   ========================================================================== */
+
+.refract-dashboard-body {
+  margin: 0;
+  padding: 24px;
+  background-color: #1a1614 !important;
+  background-image: 
+    linear-gradient(rgba(18, 16, 22, 0.45), rgba(18, 16, 22, 0.65)),
+    url('/image/study_desk_bg.png') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+}
+
+.refract-app-container {
+  display: flex;
+  gap: 24px;
+  max-width: 1680px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+/* Left Sidebar */
+.refract-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: rgba(22, 24, 32, 0.55) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border-radius: 26px !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.35),
+    0 24px 48px -12px rgba(0, 0, 0, 0.65) !important;
+  padding: 24px 18px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-prism-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 14px rgba(255, 106, 0, 0.4);
+}
+
+.brand-title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.badge-crm {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-left: 6px;
+}
+
+.btn-home-link {
+  color: #94a3b8;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.btn-home-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+}
+
+.section-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.sidebar-nav-item.active {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.user-avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.user-role {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.btn-logout-icon {
+  background: transparent;
+  border: 0;
+  color: #ef4444;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.btn-logout-icon:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Main Dashboard Area */
+.refract-main-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.topbar-greeting h4 {
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.greeting-date {
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.refract-search-pill {
+  display: flex;
+  align-items: center;
+  background: rgba(20, 22, 30, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  backdrop-filter: blur(16px);
+  width: 240px;
+}
+
+.badge-shortcut {
+  font-size: 0.65rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #94a3b8;
+  margin-left: auto;
+}
+
+.btn-icon-pill {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+.btn-icon-pill:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.btn-refract-action {
+  background: var(--refract-gradient-pill) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.88rem !important;
+  padding: 8px 18px !important;
+  border-radius: 9999px !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 18px rgba(255, 106, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.2s ease !important;
+}
+.btn-refract-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 106, 0, 0.6) !important;
+  color: #ffffff !important;
+}
+
+.avatar-refract-pill {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Refract Cards */
+.refract-card {
+  background: rgba(22, 24, 33, 0.55) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.4),
+    0 16px 36px rgba(0, 0, 0, 0.45) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.refract-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 106, 0, 0.7) 20%, 
+    rgba(255, 255, 255, 0.85) 50%, 
+    rgba(0, 242, 254, 0.7) 80%, 
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.refract-metric-title {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.refract-metric-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.badge-growth {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.text-cyan { color: #00f2fe !important; }
+.text-purple { color: #c084fc !important; }
+
+.refract-circle-progress {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid #ff6a00;
+  border-top-color: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.btn-refract-tab {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+}
+.btn-refract-tab.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.refract-chart-tag {
+  background: rgba(18, 20, 28, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 6px 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+}
+.tag-month { font-size: 0.7rem; color: #94a3b8; }
+.tag-val { font-size: 0.88rem; font-weight: 700; color: #ffffff; }
+
+.instructor-avatar-big {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.refract-audio-pill {
+  background: rgba(20, 22, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  backdrop-filter: blur(14px);
+}
+
+/* ==========================================================================
+   REFRACT INTERACTIVE FX: VIỀN, HOVER & CLICK FEEDBACK
+   ========================================================================== */
+
+/* 1. Dynamic Cursor Spotlight & Chromatic Dispersion Border */
+.refract-card, .card, .refract-sidebar {
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.28s cubic-bezier(0.25, 1, 0.5, 1), 
+              border-color 0.28s ease, 
+              background 0.28s ease !important;
+  will-change: transform, box-shadow;
+  transform-style: preserve-3d;
+}
+
+/* Mouse Flashlight Spotlight Reflection */
+.refract-card::after, .card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, -200px) var(--mouse-y, -200px), 
+    rgba(255, 255, 255, 0.14), 
+    transparent 45%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 2;
+}
+
+.refract-card:hover::after, .card:hover::after {
+  opacity: 1;
+}
+
+/* Prismatic Chromatic Dispersion on Edge Hover */
+.refract-card:hover, .card:hover {
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  background: rgba(28, 30, 42, 0.68) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 2px 3px rgba(255, 255, 255, 0.55),
+    inset 0 -1.5px 3px rgba(0, 0, 0, 0.45),
+    0 24px 60px -10px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(255, 106, 0, 0.25),
+    0 0 45px rgba(0, 242, 254, 0.15) !important;
+}
+
+/* Top Edge Rainbow Flare intensification on Hover */
+.refract-card:hover::before, .card:hover::before {
+  opacity: 1 !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, 
+    rgba(255, 75, 43, 0.8) 0%, 
+    rgba(255, 106, 0, 0.95) 25%, 
+    rgba(255, 255, 255, 1) 50%, 
+    rgba(0, 242, 254, 0.95) 75%, 
+    rgba(147, 51, 234, 0.8) 100%
+  ) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 106, 0, 0.6));
+}
+
+/* 2. Tactile Click Ripple Effect */
+.glass-click-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 106, 0, 0.2) 50%, transparent 70%);
+  transform: scale(0);
+  animation: glassRippleAnim 0.55s ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes glassRippleAnim {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* 3. Button Active / Pressed State */
+.btn-primary:active, 
+.btn-refract-action:active, 
+.btn-buy:active,
+.category-nav a:active,
+.sidebar-nav-item:active {
+  transform: scale(0.96) translateY(1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  transition: transform 0.08s ease !important;
+}
+
+/* Sidebar Nav Item Hover Glow */
+.sidebar-nav-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+  transform: translateX(4px);
+}
+
+.sidebar-nav-item.active {
+  background: linear-gradient(90deg, rgba(255, 106, 0, 0.25) 0%, rgba(255, 255, 255, 0.12) 100%) !important;
+  border-color: rgba(255, 106, 0, 0.5) !important;
+  border-left: 3px solid #ff6a00 !important;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(255, 106, 0, 0.2) !important;
+}
+
+/* Input Focus Glow */
+.form-control:focus, .form-select:focus, .refract-search-pill:focus-within {
+  border-color: rgba(255, 106, 0, 0.7) !important;
+  box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.22), 0 0 18px rgba(255, 106, 0, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   MULTI-RING WATER DROPLET RIPPLE ANIMATION (GỢN NƯỚC LĂN TĂN)
+   ========================================================================== */
+
+/* The ripple anchor point */
+.water-ripple-container {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(0, 0);
+}
+
+/* Ensure parents clip or allow ripple positioning */
+.refract-card, .card, .btn, .btn-refract-action, .category-nav a, .sidebar-nav-item, .nav-pill-link {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Concentric Liquid Water Wave Rings */
+.water-wave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  box-sizing: border-box;
+  animation: liquidWaterSpread 0.85s cubic-bezier(0.1, 0.45, 0.2, 1) forwards;
+}
+
+/* Ring 1: Primary droplet impact with bright cyan-orange refraction */
+.wave-ring-1 {
+  width: 180px;
+  height: 180px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.3) 0%, rgba(255, 106, 0, 0.15) 40%, transparent 70%);
+  box-shadow: 
+    0 0 16px rgba(0, 242, 254, 0.6),
+    inset 0 0 12px rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+/* Ring 2: Secondary gentle ripple ring */
+.wave-ring-2 {
+  width: 280px;
+  height: 280px;
+  border: 1.5px solid rgba(0, 242, 254, 0.65);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+/* Ring 3: Outer fading water swell */
+.wave-ring-3 {
+  width: 380px;
+  height: 380px;
+  border: 1px solid rgba(255, 106, 0, 0.45);
+  background: transparent;
+  box-shadow: 0 0 25px rgba(255, 106, 0, 0.25);
+}
+
+/* Liquid Wave Expansion Animation */
+@keyframes liquidWaterSpread {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}

@@ -28,7 +28,7 @@ $router->get('/health', function () {
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 });
 
-$router->get('/', fn() => (new ProductController())->index());
+$router->get('/', fn() => (new App\Controllers\LmsCourseController())->index());
 $router->get('/products/{id}', fn($id) => (new ProductController())->show((int) $id));
 $router->get('/api/products/search', fn() => (new ProductController())->searchApi());
 $router->post('/products/{id}/review', fn($id) => (new ProductController())->storeReview((int) $id));
@@ -65,6 +65,18 @@ $router->post('/payment/vietqr/webhook', fn() => (new App\Controllers\VietQrCont
 $router->post('/payment/vietqr/simulate', fn() => (new App\Controllers\VietQrController())->simulatePaid());
 $router->post('/payment/vietqr/confirm', fn() => (new App\Controllers\VietQrController())->confirmTransferred());
 $router->get('/payment/vietqr', fn() => (new App\Controllers\VietQrController())->pay());
+$router->post('/payment/cash/simulate-confirm', function() {
+    $orderId = (int) ($_POST['order_id'] ?? $_SESSION['last_order_id'] ?? 0);
+    $orderModel = new \App\Models\Order();
+    $order = $orderId > 0 ? $orderModel->find($orderId) : null;
+    if (!$order || ($order['payment_method'] ?? '') !== 'cash') {
+        flash('error', 'Không tìm thấy đơn hàng tiền mặt.');
+        redirect('/orders/success');
+    }
+    \App\PaymentService::markPaid($orderId);
+    flash('success', 'Thu ngân đã xác nhận nhận tiền mặt thành công! Khóa học đã được mở khóa.');
+    redirect('/orders/success');
+});
 
 $router->get('/orders', fn() => (new OrderController())->index());
 $router->get('/orders/track', fn() => (new OrderController())->trackForm());
@@ -274,3 +286,94 @@ $router->post('/admin/2fa', fn() => (new AuthController())->verifyAdmin2fa());
 $router->post('/admin/profile/2fa/enable', admin(fn() => (new App\Controllers\ProfileController())->enable2fa()));
 $router->post('/admin/profile/2fa/disable', admin(fn() => (new App\Controllers\ProfileController())->disable2fa()));
 $router->post('/admin/profile/2fa/confirm', admin(fn() => (new App\Controllers\ProfileController())->confirm2fa()));
+
+// LMS Setup & Migration
+$router->get('/api/lms/setup', function () {
+    header('Content-Type: application/json; charset=UTF-8');
+    try {
+        $logs = \App\LmsMigrator::run();
+        $seedLogs = \App\Models\LmsCourseSeeder::seed();
+        $pdo = \App\DB::connection();
+        $courses = $pdo->query("SELECT id, title, thumbnail, price, sale_price FROM courses")->fetchAll(\PDO::FETCH_ASSOC);
+
+        echo json_encode([
+            'ok' => true,
+            'message' => 'LMS Database migration and course seeding executed successfully!',
+            'migration_logs' => $logs,
+            'seed_logs' => $seedLogs,
+            'courses' => $courses,
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    } catch (\Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+    }
+});
+
+// ==========================================
+// LMS CLIENT ROUTES (Học viên)
+// ==========================================
+$router->get('/courses', fn() => (new App\Controllers\LmsCourseController())->index());
+$router->get('/courses/{slug}', fn($slug) => (new App\Controllers\LmsCourseController())->show($slug));
+$router->get('/courses/{id}/enroll', fn($id) => (new App\Controllers\LmsCourseController())->enroll((int)$id));
+$router->post('/courses/{id}/enroll', fn($id) => (new App\Controllers\LmsCourseController())->enroll((int)$id));
+$router->get('/courses/{id}/checkout', fn($id) => (new App\Controllers\LmsCourseController())->checkout((int)$id));
+$router->get('/courses/{id}/payment', fn($id) => redirect('/courses/' . (int)$id . '/checkout'));
+$router->post('/courses/{id}/payment', fn($id) => (new App\Controllers\LmsCourseController())->processPayment((int)$id));
+$router->post('/courses/{id}/review', fn($id) => (new App\Controllers\LmsCourseController())->storeReview((int)$id));
+$router->get('/my-courses', fn() => (new App\Controllers\LmsCourseController())->myCourses());
+
+// Classroom, Progress & Discussion
+$router->get('/learn/{courseId}', fn($courseId) => (new App\Controllers\ClassroomController())->learn((int)$courseId));
+$router->get('/learn/{courseId}/lesson/{lessonId}', fn($courseId, $lessonId) => (new App\Controllers\ClassroomController())->learn((int)$courseId, (int)$lessonId));
+$router->post('/api/progress/update', fn() => (new App\Controllers\ClassroomController())->updateProgress());
+$router->get('/learn/{courseId}/download/{materialId}', fn($courseId, $materialId) => (new App\Controllers\ClassroomController())->downloadMaterial((int)$courseId, (int)$materialId));
+$router->post('/learn/{courseId}/lesson/{lessonId}/discussion', fn($courseId, $lessonId) => (new App\Controllers\ClassroomController())->postDiscussion((int)$courseId, (int)$lessonId));
+$router->post('/api/lessons/{lessonId}/notes', fn($lessonId) => (new App\Controllers\ClassroomController())->saveNote((int)$lessonId));
+$router->post('/api/notes/{noteId}/delete', fn($noteId) => (new App\Controllers\ClassroomController())->deleteNote((int)$noteId));
+$router->delete('/api/notes/{noteId}', fn($noteId) => (new App\Controllers\ClassroomController())->deleteNote((int)$noteId));
+
+// Quiz
+$router->get('/quiz/{id}', fn($id) => (new App\Controllers\QuizController())->show((int)$id));
+$router->post('/quiz/{id}/submit', fn($id) => (new App\Controllers\QuizController())->submit((int)$id));
+
+// Certificates & Public Verification
+$router->get('/certificates/{code}', fn($code) => (new App\Controllers\CertificateController())->show($code));
+$router->get('/verify-certificate', fn() => (new App\Controllers\CertificateController())->verify());
+$router->post('/verify-certificate', fn() => (new App\Controllers\CertificateController())->verify());
+
+// ==========================================
+// LMS ADMIN ROUTES (Quản trị viên)
+// ==========================================
+$router->get('/admin/lms', admin(fn() => (new App\Controllers\Admin\LmsController())->dashboard()));
+$router->get('/admin/lms/dashboard', admin(fn() => (new App\Controllers\Admin\LmsController())->dashboard()));
+$router->get('/admin/lms/courses', admin(fn() => (new App\Controllers\Admin\LmsController())->courses()));
+$router->get('/admin/lms/courses/create', admin(fn() => (new App\Controllers\Admin\LmsController())->createCourse()));
+$router->post('/admin/lms/courses/store', admin(fn() => (new App\Controllers\Admin\LmsController())->storeCourse()));
+$router->get('/admin/lms/courses/{id}/edit', admin(fn($id) => (new App\Controllers\Admin\LmsController())->editCourse((int)$id)));
+$router->post('/admin/lms/courses/{id}/update', admin(fn($id) => (new App\Controllers\Admin\LmsController())->updateCourse((int)$id)));
+$router->post('/admin/lms/courses/{id}/delete', admin(fn($id) => (new App\Controllers\Admin\LmsController())->deleteCourse((int)$id)));
+$router->get('/admin/lms/courses/{id}/curriculum', admin(fn($id) => (new App\Controllers\Admin\LmsController())->curriculum((int)$id)));
+$router->post('/admin/lms/courses/{id}/sections', admin(fn($id) => (new App\Controllers\Admin\LmsController())->storeSection((int)$id)));
+$router->post('/admin/lms/courses/{id}/sections/{sid}/delete', admin(fn($id, $sid) => (new App\Controllers\Admin\LmsController())->deleteSection((int)$id, (int)$sid)));
+$router->post('/admin/lms/courses/{id}/lessons', admin(fn($id) => (new App\Controllers\Admin\LmsController())->storeLesson((int)$id)));
+$router->post('/admin/lms/courses/{id}/lessons/{lid}/delete', admin(fn($id, $lid) => (new App\Controllers\Admin\LmsController())->deleteLesson((int)$id, (int)$lid)));
+$router->post('/admin/lms/courses/{id}/lessons/{lid}/materials', admin(fn($id, $lid) => (new App\Controllers\Admin\LmsController())->storeMaterial((int)$id, (int)$lid)));
+
+// Quizzes & Questions
+$router->get('/admin/lms/quizzes', admin(fn() => (new App\Controllers\Admin\LmsController())->quizzes()));
+$router->get('/admin/lms/quizzes/{id}/questions', admin(fn($id) => (new App\Controllers\Admin\LmsController())->quizQuestions((int)$id)));
+$router->post('/admin/lms/quizzes/{id}/questions', admin(fn($id) => (new App\Controllers\Admin\LmsController())->storeQuestion((int)$id)));
+$router->post('/admin/lms/quizzes/{id}/questions/{qid}/delete', admin(fn($id, $qid) => (new App\Controllers\Admin\LmsController())->deleteQuestion((int)$id, (int)$qid)));
+
+// Quiz Results
+$router->get('/admin/lms/quiz-results', admin(fn() => (new App\Controllers\Admin\LmsController())->quizResults()));
+$router->get('/admin/lms/quiz-results/{id}', admin(fn($id) => (new App\Controllers\Admin\LmsController())->quizResultDetail((int)$id)));
+
+// Users & Certificates
+$router->get('/admin/lms/students', admin(fn() => (new App\Controllers\Admin\LmsController())->students()));
+$router->get('/admin/lms/instructors', admin(fn() => (new App\Controllers\Admin\LmsController())->instructors()));
+$router->get('/admin/lms/certificates', admin(fn() => (new App\Controllers\Admin\LmsController())->certificates()));
+$router->post('/admin/lms/certificates/{id}/toggle', admin(fn($id) => (new App\Controllers\Admin\LmsController())->toggleCertificate((int)$id)));
+$router->post('/admin/lms/certificates/issue', admin(fn() => (new App\Controllers\Admin\LmsController())->issueCertificateManual()));
+
+

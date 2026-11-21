@@ -22,14 +22,14 @@ class MoMoController
 
         if (!$success || $orderId <= 0) {
             flash('error', 'Thanh toán MoMo không thành công.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $orderModel = new Order();
         $order = $orderModel->find($orderId);
         if (!$order || ($order['payment_method'] ?? '') !== 'momo') {
             flash('error', 'Đơn hàng không hợp lệ.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $result = PaymentService::markPaid($orderId);
@@ -78,7 +78,7 @@ class MoMoController
 
         if (!$order || ($order['payment_method'] ?? '') !== 'momo' || ($order['payment_status'] ?? '') === 'paid') {
             flash('error', 'Không tìm thấy đơn hàng cần thanh toán.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $momoData = MoMo::createPaymentUrl($order);
@@ -105,7 +105,7 @@ class MoMoController
 
         if (!$order || ($order['payment_method'] ?? '') !== 'momo') {
             flash('error', 'Đơn hàng không hợp lệ.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $result = PaymentService::markPaid($orderId);
@@ -134,7 +134,7 @@ class MoMoController
 
         if (!$order || ($order['payment_method'] ?? '') !== 'momo') {
             flash('error', 'Không tìm thấy đơn hàng cần thanh toán.');
-            redirect('/cart');
+            redirect(!empty($_SESSION['lms_pending_course_id']) ? '/courses/' . (int)$_SESSION['lms_pending_course_id'] . '/checkout' : '/cart');
         }
 
         $momoData = MoMo::createPaymentUrl($order);
