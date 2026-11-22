@@ -2,12 +2,15 @@
 
 <style>
 .tradein-banner-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-radius: 20px;
+    background: var(--refract-card-bg, rgba(20, 24, 36, 0.65)) !important;
+    backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    -webkit-backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    border-radius: 22px !important;
     padding: 32px 36px;
     color: #fff;
     margin-bottom: 28px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    border: 1px solid var(--refract-card-border, rgba(255, 255, 255, 0.18)) !important;
+    box-shadow: var(--refract-chromatic) !important;
     position: relative;
     overflow: hidden;
 }
@@ -18,35 +21,50 @@
     top: -30px;
     width: 200px;
     height: 200px;
-    background: rgba(34, 197, 94, 0.15);
+    background: rgba(34, 197, 94, 0.2);
     border-radius: 50%;
     filter: blur(45px);
 }
 .tradein-main-card {
-    background: #ffffff;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    background: var(--refract-card-bg, rgba(20, 24, 36, 0.65)) !important;
+    backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    -webkit-backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    border-radius: 22px !important;
+    border: 1px solid var(--refract-card-border, rgba(255, 255, 255, 0.18)) !important;
+    box-shadow: var(--refract-chromatic) !important;
     padding: 32px;
+    color: var(--refract-text-main, #f8fafc) !important;
 }
 .device-card-item {
-    border: 1px solid #cbd5e1;
-    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 16px !important;
     padding: 16px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: #ffffff;
+    transition: all 0.22s ease !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(12px) !important;
+    color: #f8fafc !important;
 }
 .device-card-item:hover {
-    border-color: #ef4444;
+    border-color: rgba(255, 106, 0, 0.65) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.08);
+    box-shadow: 0 8px 24px rgba(255, 106, 0, 0.25) !important;
 }
 .device-card-item.active {
-    border-color: #ef4444 !important;
-    background: #fef2f2 !important;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    border-color: #ff6a00 !important;
+    background: rgba(255, 106, 0, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.45), 0 8px 24px rgba(255, 106, 0, 0.35) !important;
+}
+.device-card-item .text-dark {
+    color: #ffffff !important;
+}
+#valuationPreview {
+    background: linear-gradient(135deg, rgba(255, 106, 0, 0.2) 0%, rgba(0, 242, 254, 0.15) 100%) !important;
+    border: 1px solid rgba(255, 106, 0, 0.45) !important;
+    backdrop-filter: blur(18px) !important;
+    color: #ffffff !important;
 }
 </style>
 

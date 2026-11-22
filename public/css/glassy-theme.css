@@ -1,0 +1,1178 @@
+/* ==========================================================================
+   REFRACT / LIQUID GLASSY THEME - PHONE & TECH STORE EDITION
+   Inspired by Codexr UI "Refract" (Glassy Dashboard v31)
+   Liquid Glassmorphism with Chromatic Dispersion & Tech Studio Backdrop
+   ========================================================================== */
+
+:root {
+  --refract-bg-tint: rgba(12, 14, 22, 0.52);
+  --refract-card-bg: rgba(20, 24, 36, 0.55);
+  --refract-card-bg-hover: rgba(28, 34, 52, 0.70);
+  --refract-card-border: rgba(255, 255, 255, 0.16);
+  --refract-card-border-hover: rgba(255, 255, 255, 0.35);
+  --refract-bevel-highlight: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --refract-bevel-shadow: inset 0 -2px 3px 0 rgba(0, 0, 0, 0.45);
+  --refract-drop-shadow: 0 18px 45px -8px rgba(0, 0, 0, 0.55), 0 6px 16px -4px rgba(0, 0, 0, 0.4);
+  --refract-blur: blur(28px);
+  --refract-text-main: #f8fafc;
+  --refract-text-sub: #cbd5e1;
+  --refract-text-muted: #94a3b8;
+  --refract-accent-orange: #ff6a00;
+  --refract-accent-coral: #ee0979;
+  --refract-accent-cyan: #00f2fe;
+  --refract-gradient-pill: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+  --refract-gradient-cyan: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --refract-gradient-purple: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  --refract-chromatic: 
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.4),
+    0 16px 40px rgba(0, 0, 0, 0.45);
+  --current-wallpaper: url('/image/phone_glassy_bg.jpg');
+}
+
+/* 1. Body & Ambient High-Tech Backdrop */
+body {
+  background-color: #08090d !important;
+  background-image: 
+    linear-gradient(rgba(8, 10, 16, 0.48), rgba(8, 10, 16, 0.68)),
+    var(--current-wallpaper) !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  color: var(--refract-text-main) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", Roboto, sans-serif !important;
+  min-height: 100vh;
+  letter-spacing: -0.01em;
+}
+
+/* Live Video Background Engine */
+.video-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -2;
+  pointer-events: none;
+  background-color: #08090d;
+}
+
+.video-bg-player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  opacity: 0.88;
+  transition: opacity 0.5s ease;
+}
+
+.video-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 10, 16, 0.40) 0%,
+    rgba(8, 10, 16, 0.58) 50%,
+    rgba(8, 10, 16, 0.72) 100%
+  );
+  backdrop-filter: saturate(135%);
+  -webkit-backdrop-filter: saturate(135%);
+  z-index: -1;
+}
+
+body.has-video-bg {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+body.video-paused .video-bg-player {
+  filter: brightness(0.65) blur(3px);
+}
+
+.btn-video-ctrl {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #00f2fe !important;
+  border-radius: 50% !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-video-ctrl:hover {
+  background: rgba(0, 242, 254, 0.25) !important;
+  border-color: rgba(0, 242, 254, 0.6) !important;
+  color: #ffffff !important;
+  transform: scale(1.08) !important;
+}
+
+/* Smooth custom glass scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(10, 12, 18, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 106, 0, 0.6);
+}
+
+/* 2. Top Banners & Translucent Header */
+.top-promo-banner {
+  background: rgba(14, 16, 24, 0.72) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--refract-text-sub) !important;
+}
+
+.top-bar {
+  background: rgba(10, 12, 18, 0.68) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--refract-text-muted) !important;
+  font-size: 0.85rem !important;
+}
+
+.top-bar a {
+  color: #ff8c38 !important;
+  font-weight: 600;
+}
+
+.site-header {
+  background: rgba(16, 18, 28, 0.65) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.45) !important;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.site-header .logo {
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.site-header .logo img {
+  filter: drop-shadow(0 2px 8px rgba(255, 106, 0, 0.4));
+}
+
+/* Search Box with Frosted Glass Pill */
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  background: rgba(14, 16, 24, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+  padding: 10px 48px 10px 20px !important;
+  backdrop-filter: blur(14px) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.25s ease !important;
+}
+
+.search-box input:focus {
+  background: rgba(18, 20, 32, 0.85) !important;
+  border-color: rgba(255, 106, 0, 0.75) !important;
+  box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.25), 0 0 22px rgba(255, 106, 0, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.search-box button[type="submit"] {
+  background: var(--refract-gradient-pill) !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  right: 6px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  box-shadow: 0 3px 12px rgba(255, 106, 0, 0.4) !important;
+  transition: transform 0.2s ease !important;
+}
+
+.search-box button[type="submit"]:hover {
+  transform: translateY(-50%) scale(1.08) !important;
+}
+
+.search-suggestions-box {
+  background: rgba(18, 20, 32, 0.92) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6) !important;
+  color: var(--refract-text-main) !important;
+  overflow: hidden;
+}
+
+.search-suggestion-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--refract-text-main) !important;
+  transition: background 0.18s ease;
+}
+
+.search-suggestion-item:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Header Action Buttons */
+.btn-install-app, .btn-theme-toggle, .cart-btn, .user-greet, .admin-only-link, .btn-wallpaper-picker {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-decoration: none !important;
+}
+
+.btn-install-app:hover, .btn-theme-toggle:hover, .cart-btn:hover, .user-greet:hover, .admin-only-link:hover, .btn-wallpaper-picker:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+}
+
+.cart-btn .badge, .cart-count {
+  background: var(--refract-gradient-pill) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(255, 106, 0, 0.5) !important;
+}
+
+/* 3. Category Navigation with Refraction Pills */
+.category-nav {
+  background: rgba(14, 16, 26, 0.52) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 10px 0 !important;
+}
+
+.category-nav a {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  padding: 7px 18px !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.category-nav a:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.35) !important;
+}
+
+.category-nav a.active, .category-nav a.category-nav-highlight {
+  background: var(--refract-gradient-pill) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+/* 4. Product Cards - Iconic Liquid Glassmorphism */
+.product-card, .card, .glass-panel {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border-radius: 22px !important;
+  border: 1px solid var(--refract-card-border) !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Top Edge Rainbow / Prismatic Refraction Flare */
+.product-card::before, .card::before, .glass-panel::before, .hero-benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 106, 0, 0.6) 20%, 
+    rgba(255, 255, 255, 0.85) 50%, 
+    rgba(0, 242, 254, 0.6) 80%, 
+    transparent 100%
+  );
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+.product-card:hover, .card:hover, .glass-panel:hover {
+  background: var(--refract-card-bg-hover) !important;
+  border-color: var(--refract-card-border-hover) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 2px 3px rgba(255, 255, 255, 0.55),
+    inset 0 -1.5px 3px rgba(0, 0, 0, 0.45),
+    0 24px 60px -10px rgba(0, 0, 0, 0.75),
+    0 0 30px rgba(255, 106, 0, 0.25),
+    0 0 45px rgba(0, 242, 254, 0.15) !important;
+}
+
+.product-card:hover::before, .card:hover::before {
+  opacity: 1 !important;
+  height: 3px !important;
+  background: linear-gradient(90deg, 
+    rgba(255, 75, 43, 0.85) 0%, 
+    rgba(255, 106, 0, 0.95) 25%, 
+    rgba(255, 255, 255, 1) 50%, 
+    rgba(0, 242, 254, 0.95) 75%, 
+    rgba(168, 85, 247, 0.85) 100%
+  ) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 106, 0, 0.6));
+}
+
+/* Product Card Image Container */
+.product-card .img-wrap {
+  background: rgba(14, 16, 24, 0.45) !important;
+  backdrop-filter: blur(8px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card .img-wrap img {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.product-card:hover .img-wrap img {
+  transform: scale(1.06) translateY(-4px) !important;
+}
+
+/* Wishlist Button */
+.btn-card-wishlist {
+  background: rgba(18, 20, 32, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ff4757 !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.btn-card-wishlist:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.15) !important;
+}
+
+/* Discount Badge */
+.product-badge {
+  background: var(--refract-gradient-pill) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(255, 106, 0, 0.45) !important;
+}
+
+/* Product Typography & Metadata */
+.product-cat {
+  color: var(--refract-accent-orange) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.product-name {
+  color: #f8fafc !important;
+  font-weight: 600 !important;
+  transition: color 0.2s ease !important;
+}
+
+.product-name:hover {
+  color: #ff8c38 !important;
+}
+
+.product-desc {
+  color: var(--refract-text-muted) !important;
+}
+
+.product-price, .price-current {
+  color: #ff6a00 !important;
+  background: linear-gradient(135deg, #ff8c38 0%, #ee0979 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800 !important;
+  text-shadow: 0 2px 10px rgba(255, 106, 0, 0.25);
+}
+
+.product-price small {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+
+/* 5. Buttons - Glossy Liquid Glass */
+.btn-buy, .btn-primary, .btn-checkout-now {
+  background: var(--refract-gradient-pill) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 6px 20px rgba(255, 106, 0, 0.4), inset 0 1px 1.5px rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.btn-buy:hover, .btn-primary:hover, .btn-checkout-now:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 10px 28px rgba(255, 106, 0, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.7) !important;
+  color: #ffffff !important;
+}
+
+.btn-view-more, .btn-outline-primary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-view-more:hover, .btn-outline-primary:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+.btn:active, .btn-buy:active, .btn-view-more:active {
+  transform: scale(0.96) translateY(1px) !important;
+  transition: transform 0.08s ease !important;
+}
+
+/* 6. Home Hero, Banners, Trust Strip, Categories */
+#promoCarousel {
+  border-radius: 22px !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: var(--refract-chromatic) !important;
+  overflow: hidden;
+}
+
+.hero-benefit-card {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: #f8fafc !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.hero-benefit-card:hover {
+  background: var(--refract-card-bg-hover) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 106, 0, 0.25) !important;
+}
+
+.hero-benefit-icon {
+  background: var(--refract-gradient-pill) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(255, 106, 0, 0.4) !important;
+}
+
+.hero-benefit-card strong {
+  color: #ffffff !important;
+}
+.hero-benefit-card small, .hero-benefit-card em {
+  color: var(--refract-text-sub) !important;
+}
+
+.home-trust-strip {
+  background: rgba(18, 22, 34, 0.52) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  margin-bottom: 2rem !important;
+}
+
+.home-trust-item {
+  color: #e2e8f0 !important;
+}
+
+.home-trust-item > i {
+  color: var(--refract-accent-cyan) !important;
+  filter: drop-shadow(0 2px 8px rgba(0, 242, 254, 0.4));
+}
+
+.home-trust-item strong {
+  color: #ffffff !important;
+}
+.home-trust-item small {
+  color: var(--refract-text-muted) !important;
+}
+
+/* Category Grid Cards */
+.home-category-card {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: #f8fafc !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.home-category-card:hover {
+  background: var(--refract-card-bg-hover) !important;
+  border-color: rgba(255, 106, 0, 0.6) !important;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 106, 0, 0.3) !important;
+}
+
+.home-category-card > span {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--refract-accent-orange) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.home-category-card strong {
+  color: #ffffff !important;
+}
+
+/* Section Header Lines */
+.section-title h2 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.section-eyebrow {
+  color: var(--refract-accent-cyan) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.78rem !important;
+}
+
+.section-link {
+  color: var(--refract-accent-orange) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.section-link:hover {
+  color: #ffffff !important;
+  transform: translateX(3px);
+}
+
+/* 7. Flash Sale Banner */
+.flash-sale-section {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.45) 0%, rgba(255, 106, 0, 0.45) 100%) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 16px 45px rgba(220, 38, 38, 0.3), inset 0 1.5px 2px rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+  overflow: hidden;
+}
+
+.flash-sale-title-main {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.timer-box {
+  background: rgba(14, 16, 24, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 8. Search Keywords & Filter Cards */
+.search-keywords-card, .filter-sidebar, .filter-box {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+}
+
+.search-keywords-card h5 {
+  color: #ffffff !important;
+}
+
+.keyword-tag, .filter-chip {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  padding: 6px 16px !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+}
+
+.keyword-tag:hover, .filter-chip:hover {
+  background: var(--refract-gradient-pill) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 4px 16px rgba(255, 106, 0, 0.45) !important;
+  transform: translateY(-2px);
+}
+
+/* 9. Forms, Inputs, Radios & Checkboxes */
+.form-control, .form-select {
+  background: rgba(14, 16, 24, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(14px) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(18, 20, 32, 0.85) !important;
+  border-color: var(--refract-accent-orange) !important;
+  box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.25), 0 0 18px rgba(255, 106, 0, 0.35) !important;
+  color: #ffffff !important;
+}
+
+.form-check-input {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--refract-accent-orange) !important;
+  border-color: var(--refract-accent-orange) !important;
+  box-shadow: 0 0 10px rgba(255, 106, 0, 0.5) !important;
+}
+
+/* 10. Tables, Cart & Checkout Views */
+.table, .cart-table {
+  color: #f1f5f9 !important;
+  background: transparent !important;
+}
+
+.table thead th, .cart-table thead th {
+  background: rgba(14, 16, 26, 0.75) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--refract-accent-orange) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.05em;
+}
+
+.table tbody tr, .cart-table tbody tr {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.table tbody tr:hover, .cart-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.summary-card, .checkout-form-card, .order-summary-card {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: #f8fafc !important;
+}
+
+/* 11. Footer */
+.site-footer {
+  background: rgba(12, 14, 22, 0.8) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5) !important;
+  color: var(--refract-text-sub) !important;
+}
+
+.site-footer h5, .site-footer .footer-heading {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.site-footer a {
+  color: #cbd5e1 !important;
+  transition: color 0.2s ease !important;
+}
+
+.site-footer a:hover {
+  color: var(--refract-accent-orange) !important;
+}
+
+/* 12. Floating Widgets & Modals */
+#btnChatBot, #btnScrollTop, #floatingHotline {
+  background: rgba(20, 24, 36, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+#chatBotWindow {
+  background: rgba(16, 20, 32, 0.92) !important;
+  backdrop-filter: blur(32px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7) !important;
+  color: #ffffff !important;
+}
+
+.modal-content, .offcanvas {
+  background: rgba(18, 22, 34, 0.92) !important;
+  backdrop-filter: blur(32px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75) !important;
+  color: #ffffff !important;
+}
+
+.modal-header, .offcanvas-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+/* 13. Wallpaper Selector Widget in Header */
+.wallpaper-switcher-menu {
+  background: rgba(16, 20, 32, 0.95) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65) !important;
+  padding: 12px !important;
+  min-width: 250px !important;
+}
+
+.wallpaper-opt-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 12px !important;
+  color: #e2e8f0 !important;
+  border: 1px solid transparent !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+  text-align: left !important;
+  background: transparent !important;
+  font-size: 0.88rem !important;
+}
+
+.wallpaper-opt-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+.wallpaper-opt-btn.active {
+  background: linear-gradient(90deg, rgba(255, 106, 0, 0.25) 0%, rgba(255, 255, 255, 0.12) 100%) !important;
+  border-color: rgba(255, 106, 0, 0.5) !important;
+  border-left: 3px solid #ff6a00 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.wp-thumb-preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   MULTI-RING WATER DROPLET RIPPLE ANIMATION (GỢN NƯỚC LĂN TĂN TOÀN MÀN HÌNH)
+   ========================================================================== */
+
+.water-ripple-container {
+  position: fixed !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+  z-index: 9999999 !important;
+  transform: translate(0, 0);
+}
+
+/* Luminous center droplet impact spark */
+.water-droplet-impact {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #00f2fe 60%, rgba(255, 106, 0, 0.8) 100%);
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 0 16px #00f2fe, 0 0 30px #ffffff;
+  animation: dropletImpactAnim 0.4s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes dropletImpactAnim {
+  0% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* Concentric Liquid Water Wave Rings */
+.water-wave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  box-sizing: border-box;
+  animation: liquidWaterSpread 0.9s cubic-bezier(0.12, 0.48, 0.2, 1) forwards;
+}
+
+/* Ring 1: Primary droplet impact with bright cyan-orange refraction */
+.wave-ring-1 {
+  width: 160px;
+  height: 160px;
+  border: 2.5px solid rgba(255, 255, 255, 0.95);
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.45) 0%, rgba(255, 106, 0, 0.22) 40%, transparent 70%);
+  box-shadow: 
+    0 0 22px rgba(0, 242, 254, 0.85),
+    inset 0 0 14px rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Ring 2: Secondary gentle ripple ring */
+.wave-ring-2 {
+  width: 260px;
+  height: 260px;
+  border: 2px solid rgba(0, 242, 254, 0.85);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 65%);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+}
+
+/* Ring 3: Third expanding wave ring */
+.wave-ring-3 {
+  width: 380px;
+  height: 380px;
+  border: 1.5px solid rgba(255, 106, 0, 0.7);
+  background: transparent;
+  box-shadow: 0 0 30px rgba(255, 106, 0, 0.4);
+}
+
+/* Ring 4: Outer soft water swell */
+.wave-ring-4 {
+  width: 500px;
+  height: 500px;
+  border: 1px solid rgba(0, 242, 254, 0.45);
+  background: transparent;
+  box-shadow: 0 0 40px rgba(0, 242, 254, 0.25);
+}
+
+@keyframes liquidWaterSpread {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Add-on Services Glassy Styling */
+.addon-services-card {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 18px !important;
+  color: var(--refract-text-main) !important;
+}
+
+.addon-services-card .text-dark {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   GLOBAL GLASSY SYSTEM AUDIT & OVERRIDES (RÀ SOÁT TOÀN DIỆN MỌI TRANG)
+   Eliminates all solid white boxes, aligns trade-in, warranty, cart, checkout,
+   profile, orders, and wishlist with Refract Glassmorphism
+   ========================================================================== */
+
+/* 1. Universal Color & Contrast Harmonization */
+.text-dark, 
+.text-black, 
+h1.text-dark, 
+h2.text-dark, 
+h3.text-dark, 
+h4.text-dark, 
+h5.text-dark, 
+h6.text-dark, 
+label.text-dark, 
+div.text-dark, 
+span.text-dark,
+strong.text-dark,
+p.text-dark,
+a.text-dark {
+  color: #f8fafc !important;
+}
+
+.text-muted, .text-secondary {
+  color: #94a3b8 !important;
+}
+
+.border {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.bg-white, .bg-light, .bg-light-subtle {
+  background: var(--refract-card-bg) !important;
+  color: var(--refract-text-main) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+/* 2. Trade-In (Thu Cũ Đổi Mới) Full Glassy Styling */
+.tradein-banner-header {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid var(--refract-card-border) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: #ffffff !important;
+}
+
+.tradein-main-card {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid var(--refract-card-border) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+}
+
+.device-card-item {
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 16px !important;
+  color: #f8fafc !important;
+  transition: all 0.22s ease !important;
+}
+
+.device-card-item:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 106, 0, 0.65) !important;
+  box-shadow: 0 8px 24px rgba(255, 106, 0, 0.25) !important;
+  transform: translateY(-2px);
+}
+
+.device-card-item.active {
+  background: rgba(255, 106, 0, 0.2) !important;
+  border-color: #ff6a00 !important;
+  box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.45), 0 8px 24px rgba(255, 106, 0, 0.35) !important;
+}
+
+.device-card-item .text-dark {
+  color: #ffffff !important;
+}
+
+#valuationPreview {
+  background: linear-gradient(135deg, rgba(255, 106, 0, 0.22) 0%, rgba(0, 242, 254, 0.18) 100%) !important;
+  border: 1px solid rgba(255, 106, 0, 0.45) !important;
+  backdrop-filter: blur(18px) !important;
+  color: #ffffff !important;
+  border-radius: 20px !important;
+}
+
+/* 3. Warranty (Bảo Hành Điện Tử) */
+.warranty-banner-header, .warranty-search-card {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid var(--refract-card-border) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+}
+
+.input-group-text {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #cbd5e1 !important;
+}
+
+/* 4. Cart & Checkout Pages */
+.cart-card, 
+.checkout-summary-card, 
+.expandable-form-box, 
+.vat-auto-card, 
+.choice-list-option,
+.order-summary-box {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid var(--refract-card-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+}
+
+.choice-list-option {
+  transition: all 0.22s ease !important;
+}
+
+.choice-list-option:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+.choice-list-option.selected {
+  background: rgba(255, 106, 0, 0.2) !important;
+  border-color: #ff6a00 !important;
+  box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.4), 0 8px 24px rgba(255, 106, 0, 0.25) !important;
+}
+
+/* 5. Orders, Profile & Wishlist */
+.orders-table-card,
+.order-stat-card,
+.stat-card-widget,
+.profile-sidebar-card,
+.profile-main-card,
+.loyalty-card-wrapper,
+.wishlist-empty {
+  background: var(--refract-card-bg) !important;
+  backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  -webkit-backdrop-filter: var(--refract-blur) saturate(190%) !important;
+  border: 1px solid var(--refract-card-border) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--refract-chromatic) !important;
+  color: var(--refract-text-main) !important;
+}
+
+.status-pill-filter {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #e2e8f0 !important;
+  border-radius: 9999px !important;
+  transition: all 0.2s ease !important;
+}
+
+.status-pill-filter:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.status-pill-filter.active {
+  background: var(--refract-gradient-pill) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(255, 106, 0, 0.4) !important;
+}
+
+/* 6. Buttons Styling */
+.btn-dark {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 12px;
+  transition: all 0.2s ease !important;
+}
+
+.btn-dark:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.btn-danger {
+  background: var(--refract-gradient-pill) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(255, 106, 0, 0.4) !important;
+}
+
+.btn-danger:hover {
+  background: var(--refract-gradient-pill) !important;
+  box-shadow: 0 8px 24px rgba(255, 106, 0, 0.6) !important;
+  transform: translateY(-2px);
+}

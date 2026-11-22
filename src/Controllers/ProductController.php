@@ -152,6 +152,7 @@ class ProductController
             'hasReviewed' => $hasReviewed,
             'relatedProducts' => $relatedProducts,
             'recentlyViewedProducts' => $recentlyViewedProducts,
+            'stores' => (new \App\Models\Store())->active(),
         ]);
     }
 

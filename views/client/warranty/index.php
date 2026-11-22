@@ -1,11 +1,14 @@
 <style>
 .warranty-banner-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-radius: 20px;
+    background: var(--refract-card-bg, rgba(20, 24, 36, 0.65)) !important;
+    backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    -webkit-backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    border-radius: 22px !important;
     padding: 32px 36px;
     color: #fff;
     margin-bottom: 28px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    border: 1px solid var(--refract-card-border, rgba(255, 255, 255, 0.18)) !important;
+    box-shadow: var(--refract-chromatic) !important;
     position: relative;
     overflow: hidden;
 }
@@ -16,16 +19,19 @@
     top: -40px;
     width: 220px;
     height: 220px;
-    background: rgba(37, 99, 235, 0.15);
+    background: rgba(0, 242, 254, 0.2);
     border-radius: 50%;
     filter: blur(45px);
 }
 .warranty-search-card {
-    background: #ffffff;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    background: var(--refract-card-bg, rgba(20, 24, 36, 0.65)) !important;
+    backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    -webkit-backdrop-filter: var(--refract-blur, blur(28px)) saturate(190%) !important;
+    border-radius: 22px !important;
+    border: 1px solid var(--refract-card-border, rgba(255, 255, 255, 0.18)) !important;
+    box-shadow: var(--refract-chromatic) !important;
     padding: 24px;
+    color: #f8fafc !important;
 }
 </style>
 

@@ -14,9 +14,9 @@ class WarrantyController
         if ($query !== '') {
             $db = DB::connection();
             $stmt = $db->prepare("
-                SELECT w.*, p.name AS product_name, p.image AS product_image, o.order_code
+                SELECT w.*, COALESCE(p.name, 'Điện thoại chính hãng Hades') AS product_name, p.image AS product_image, o.order_code
                 FROM warranties w 
-                JOIN products p ON p.id = w.product_id
+                LEFT JOIN products p ON p.id = w.product_id
                 LEFT JOIN orders o ON o.id = w.order_id
                 WHERE w.customer_phone = ? OR w.warranty_code = ? OR w.imei = ? OR o.order_code = ?
                 ORDER BY w.created_at DESC

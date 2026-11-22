@@ -1,7 +1,7 @@
 <?php
 $title = 'Thanh toán & Đặt hàng';
 $isMember = $isMember ?? (authUser() !== null);
-$oldPayment = old('payment_method', 'cash');
+$oldPayment = old('payment_method', $_GET['payment'] ?? 'cash');
 $oldDelivery = old('delivery_method', 'shipping');
 ?>
 
@@ -501,7 +501,7 @@ $oldDelivery = old('delivery_method', 'shipping');
                         <label class="form-label small fw-bold text-dark">Kỳ hạn trả góp mong muốn *</label>
                         <select name="installment_months" class="form-select form-select-sm">
                             <?php foreach ([3,6,9,12] as $m): ?>
-                                <option value="<?= $m ?>" <?= old('installment_months', '6') === (string)$m ? 'selected' : '' ?>><?= $m ?> Tháng</option>
+                                <option value="<?= $m ?>" <?= old('installment_months', $_GET['months'] ?? '6') === (string)$m ? 'selected' : '' ?>><?= $m ?> Tháng</option>
                             <?php endforeach; ?>
                         </select>
                     </div>

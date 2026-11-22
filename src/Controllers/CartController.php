@@ -79,6 +79,11 @@ class CartController
                 $name = $product['name'] . ' (' . $color . ')';
             }
 
+            $addonPrice = (int) ($item['addon_price'] ?? 0);
+            $price += $addonPrice;
+            $originalPrice += $addonPrice;
+            $addonNotes = $item['addon_notes'] ?? '';
+
             $refreshed[$key] = [
                 'product_id' => $productId,
                 'variant_id' => $variantId,
@@ -92,6 +97,8 @@ class CartController
                 'has_discount' => $priced['has_discount'],
                 'discount_percent' => $priced['discount_percent'],
                 'color' => $color,
+                'addon_price' => $addonPrice,
+                'addon_notes' => $addonNotes,
             ];
         }
 
@@ -126,7 +133,12 @@ class CartController
     public function buyNow(int $productId): void
     {
         $this->addToCartLogic($productId);
-        redirect('/checkout');
+        $installmentQuery = '';
+        if (!empty($_POST['is_installment'])) {
+            $months = (int)($_POST['installment_months'] ?? 6);
+            $installmentQuery = '?payment=installment&months=' . $months;
+        }
+        redirect('/checkout' . $installmentQuery);
     }
 
     private function addToCartLogic(int $productId): void
@@ -150,8 +162,17 @@ class CartController
         $isPreorder = (int) ($product['is_preorder'] ?? 0) === 1;
         $stock = $variant ? (int) ($variant['stock'] ?? 0) : (int) ($product['stock'] ?? 0);
 
+        $addonPrice = max(0, (int)($_POST['addon_price'] ?? 0));
+        $addonNotes = trim($_POST['addon_notes'] ?? '');
+
         $cartKey = $variantId > 0 ? "{$productId}-{$variantId}" : (string)$productId;
+        if ($addonPrice > 0 || $addonNotes !== '') {
+            $cartKey .= '-add' . substr(md5($addonPrice . $addonNotes), 0, 6);
+        }
         $color = trim($_POST['color'] ?? 'Tiêu chuẩn');
+        if ($addonNotes !== '') {
+            $color .= ' + [' . $addonNotes . ']';
+        }
         $cart = $this->refreshCart($this->getCart());
 
         $existingQty = isset($cart[$cartKey]) ? (int)$cart[$cartKey]['quantity'] : 0;
@@ -193,6 +214,8 @@ class CartController
                 'variant_id' => $variantId,
                 'quantity' => $requestedQty,
                 'color' => $color,
+                'addon_price' => $addonPrice,
+                'addon_notes' => $addonNotes,
             ];
         }
 

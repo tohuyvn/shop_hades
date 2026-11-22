@@ -7,14 +7,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="/css/shop.min.css" rel="stylesheet">
+    <link href="/css/glassy-theme.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background-color: #08090d !important;
+            background-image: 
+                linear-gradient(rgba(8, 10, 16, 0.48), rgba(8, 10, 16, 0.68)),
+                var(--current-wallpaper, url('/image/phone_glassy_bg.jpg')) !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-attachment: fixed !important;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: system-ui, -apple-system, sans-serif;
+            color: #f8fafc;
         }
         .auth-container {
             width: 100%;
@@ -22,12 +30,16 @@
             padding: 20px;
         }
         .auth-card-modern {
-            background: #ffffff;
+            background: rgba(20, 24, 36, 0.65) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
             border-radius: 22px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 1.5px 2px rgba(255, 255, 255, 0.45);
             padding: 36px 32px;
             position: relative;
             overflow: hidden;
+            color: #f8fafc;
         }
         .auth-card-modern::before {
             content: '';
@@ -35,22 +47,26 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #ef4444 0%, #3b82f6 100%);
+            height: 3px;
+            background: linear-gradient(90deg, #ff4b2b 0%, #ff6a00 50%, #00f2fe 100%);
         }
         .form-control-modern {
+            background: rgba(14, 16, 24, 0.6) !important;
             border-radius: 12px;
             padding: 12px 16px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff !important;
             font-size: 14px;
             transition: all 0.2s ease;
         }
         .form-control-modern:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+            background: rgba(18, 20, 32, 0.85) !important;
+            border-color: #ff6a00 !important;
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.25) !important;
+            color: #ffffff !important;
         }
         .btn-login-main {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
             color: #ffffff;
             border: none;
             border-radius: 12px;
@@ -61,7 +77,7 @@
             box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
         }
         .btn-login-main:hover {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
             color: #ffffff;
             transform: translateY(-1px);
         }
@@ -186,5 +202,6 @@
     </div>
 </div>
 
+<script src="/js/refract-interactive.js"></script>
 </body>
 </html>

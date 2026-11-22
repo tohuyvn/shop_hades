@@ -29,6 +29,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="/css/shop.min.css" rel="stylesheet">
     <link href="/css/animation.min.css" rel="stylesheet">
+    <link href="/css/glassy-theme.css" rel="stylesheet">
     <!-- Leaflet — chỉ load khi có bản đồ footer -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" media="print" onload="this.media='all'">
     <script>
@@ -67,6 +68,13 @@
     <?php endif; ?>
 </head>
 <body>
+<!-- Live Animated Video Background -->
+<div class="video-bg-container" id="videoBgContainer" aria-hidden="true">
+    <video id="bgVideoPlayer" class="video-bg-player" autoplay muted loop playsinline preload="auto">
+        <source id="bgVideoSource" src="/video/phone_devices_loop.mp4" type="video/mp4">
+    </video>
+    <div class="video-bg-overlay"></div>
+</div>
 <div class="top-promo-banner" role="banner">
     <div class="container promo-banner-inner">
         <span class="promo-banner-label"><i class="bi bi-stars"></i> Ưu đãi tuần này</span>
@@ -84,7 +92,13 @@
             <i class="bi bi-truck"></i> Miễn phí giao hàng đơn từ 500.000đ
         </span>
         <span class="top-bar-item">
-            <i class="bi bi-shield-check"></i> Bảo hành chính hãng
+            <a href="/warranty" class="text-white text-decoration-none"><i class="bi bi-shield-check text-warning"></i> Tra cứu Bảo hành (IMEI)</a>
+        </span>
+        <span class="top-bar-item">
+            <a href="/trade-in" class="text-white text-decoration-none"><i class="bi bi-arrow-repeat text-info"></i> Thu cũ Đổi mới</a>
+        </span>
+        <span class="top-bar-item d-none d-lg-inline">
+            <a href="/pages/dia-chi-cua-hang" class="text-white text-decoration-none"><i class="bi bi-geo-alt text-danger"></i> Hệ thống Showroom</a>
         </span>
     </div>
 </div>
@@ -111,6 +125,80 @@
             <button id="theme-toggle" class="btn-theme-toggle" aria-label="Đổi giao diện">
                 <i class="bi bi-sun-fill" id="theme-toggle-icon"></i>
             </button>
+            <button type="button" id="btnVideoToggle" class="btn-theme-toggle btn-video-ctrl" title="Tạm dừng video nền" aria-label="Tạm dừng video">
+                <i class="bi bi-pause-fill"></i>
+            </button>
+            <div class="dropdown d-inline-block">
+                <button class="btn-theme-toggle btn-wallpaper-picker" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Đổi hình nền / video nền" aria-label="Đổi hình nền">
+                    <i class="bi bi-camera-video"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end wallpaper-switcher-menu shadow" style="min-width: 290px;">
+                    <div class="px-2 py-1 text-muted small fw-bold text-uppercase d-flex align-items-center justify-content-between" style="letter-spacing: 0.05em; font-size: 11px;">
+                        <span>Video Nền Động (Live)</span>
+                        <span class="badge bg-danger bg-opacity-75" style="font-size: 9px;">Motion</span>
+                    </div>
+                    <button type="button" class="wallpaper-opt-btn active" data-bg="video-phones">
+                        <span class="wp-thumb-preview d-flex align-items-center justify-content-center bg-dark text-warning">
+                            <i class="bi bi-phone"></i>
+                        </span>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold text-white d-flex align-items-center justify-content-between">
+                                <span>Smartphone 3D</span>
+                                <span class="badge bg-primary bg-opacity-50 text-info" style="font-size: 9px;">Live Loop</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 10px;">Thiết bị & điện thoại 3D chuyển động</div>
+                        </div>
+                    </button>
+                    <button type="button" class="wallpaper-opt-btn" data-bg="video-particles">
+                        <span class="wp-thumb-preview d-flex align-items-center justify-content-center bg-dark text-info">
+                            <i class="bi bi-stars"></i>
+                        </span>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold text-white d-flex align-items-center justify-content-between">
+                                <span>Cyber Neon Particles</span>
+                                <span class="badge bg-primary bg-opacity-50 text-info" style="font-size: 9px;">Live Loop</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 10px;">Hạt ánh sáng bay trong bóng tối</div>
+                        </div>
+                    </button>
+                    <button type="button" class="wallpaper-opt-btn" data-bg="video-chipset">
+                        <span class="wp-thumb-preview d-flex align-items-center justify-content-center bg-dark text-success">
+                            <i class="bi bi-cpu"></i>
+                        </span>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold text-white d-flex align-items-center justify-content-between">
+                                <span>Chipset & Circuit</span>
+                                <span class="badge bg-primary bg-opacity-50 text-info" style="font-size: 9px;">Live Loop</span>
+                            </div>
+                            <div class="text-muted" style="font-size: 10px;">Bo mạch vi xử lý công nghệ</div>
+                        </div>
+                    </button>
+
+                    <div class="dropdown-divider my-2 border-secondary border-opacity-25"></div>
+                    <div class="px-2 py-1 text-muted small fw-bold text-uppercase" style="letter-spacing: 0.05em; font-size: 11px;">Hình Nền Tĩnh (Static)</div>
+                    <button type="button" class="wallpaper-opt-btn" data-bg="titanium">
+                        <span class="wp-thumb-preview" style="background-image: url('/image/phone_glassy_bg.jpg');"></span>
+                        <div>
+                            <div class="fw-semibold text-white">Titanium Neon Ambient</div>
+                            <div class="text-muted" style="font-size: 10px;">Dải titanium phản quang</div>
+                        </div>
+                    </button>
+                    <button type="button" class="wallpaper-opt-btn" data-bg="showroom">
+                        <span class="wp-thumb-preview" style="background-image: url('/image/phone_showroom_bg.jpg');"></span>
+                        <div>
+                            <div class="fw-semibold text-white">Cyber Showroom</div>
+                            <div class="text-muted" style="font-size: 10px;">Sân khấu công nghệ</div>
+                        </div>
+                    </button>
+                    <button type="button" class="wallpaper-opt-btn" data-bg="futuristic">
+                        <span class="wp-thumb-preview" style="background-image: url('/image/phone_futuristic_bg.jpg');"></span>
+                        <div>
+                            <div class="fw-semibold text-white">Obsidian Flagship</div>
+                            <div class="text-muted" style="font-size: 10px;">Phòng trưng bày tương lai</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
             <?php if ($user = authUser()): ?>
                 <?php if (isAdmin()): ?>
                     <a href="/admin/products" class="admin-only-link d-none d-md-inline-flex"><i class="bi bi-gear"></i> Quản trị</a>
@@ -1932,6 +2020,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script src="/js/cart-anim.js"></script>
+<script src="/js/refract-interactive.js"></script>
 
 </body>
 </html>

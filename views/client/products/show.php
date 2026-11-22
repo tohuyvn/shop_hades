@@ -154,24 +154,84 @@ $ogImage = !empty($product['image']) ? imageUrl($product['image']) : '';
                 </div>
             <?php endif; ?>
 
-            <div class="product-actions d-flex gap-3 flex-wrap mt-auto">
-                <form method="post" action="/cart/buy/<?= $product['id'] ?>" class="flex-grow-1" style="min-width:180px" id="buyNowForm">
+            <!-- Dịch vụ Gói Bảo Hành & Phụ Kiện Mua Kèm (Cross-selling & Add-on Services) -->
+            <div class="addon-services-card mb-4 p-3 rounded-3" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                <div class="fw-bold small text-uppercase mb-2 text-dark d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-shield-fill-check text-primary me-1"></i> Gói Bảo Hành Khuyên Dùng</span>
+                    <span class="badge bg-danger text-white" style="font-size: 10px;">Hot</span>
+                </div>
+                <div class="d-flex flex-column gap-2 mb-3">
+                    <label class="form-check p-2 rounded-2 border bg-white d-flex align-items-center justify-content-between cursor-pointer mb-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <input class="form-check-input mt-0 addon-option" type="checkbox" value="490000" data-note="Bảo hành VIP 1 đổi 1 (12T)" onchange="syncAddonSelections()">
+                            <div>
+                                <div class="small fw-bold text-dark">🛡️ Bảo hành VIP 1 đổi 1 trong 12 tháng</div>
+                                <div class="text-muted" style="font-size: 11px;">Bảo hành cả rơi vỡ, vào nước - Đổi máy mới tương đương</div>
+                            </div>
+                        </div>
+                        <div class="text-danger fw-bold small">+490.000₫</div>
+                    </label>
+                    <label class="form-check p-2 rounded-2 border bg-white d-flex align-items-center justify-content-between cursor-pointer mb-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <input class="form-check-input mt-0 addon-option" type="checkbox" value="790000" data-note="Bảo hành mở rộng 24T" onchange="syncAddonSelections()">
+                            <div>
+                                <div class="small fw-bold text-dark">⚡ Gia hạn bảo hành chính hãng 24 tháng</div>
+                                <div class="text-muted" style="font-size: 11px;">Yên tâm sử dụng thêm 1 năm sau khi hết hạn bảo hành gốc</div>
+                            </div>
+                        </div>
+                        <div class="text-danger fw-bold small">+790.000₫</div>
+                    </label>
+                </div>
+
+                <div class="fw-bold small text-uppercase mb-2 text-dark d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-lightning-charge-fill text-warning me-1"></i> Phụ Kiện Mua Kèm Giảm Đến 40%</span>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <label class="form-check p-2 rounded-2 border bg-white d-flex align-items-center justify-content-between cursor-pointer mb-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <input class="form-check-input mt-0 addon-option" type="checkbox" value="290000" data-note="Củ sạc nhanh 30W GaN" onchange="syncAddonSelections()">
+                            <div>
+                                <div class="small fw-bold text-dark">🔌 Củ sạc nhanh 30W GaN Type-C</div>
+                                <div class="text-muted" style="font-size: 11px;">Sạc nhanh chuẩn PD an toàn (Giá gốc: 450.000₫)</div>
+                            </div>
+                        </div>
+                        <div class="text-danger fw-bold small">+290.000₫ <s class="text-muted small fw-normal ms-1">450.000₫</s></div>
+                    </label>
+                    <label class="form-check p-2 rounded-2 border bg-white d-flex align-items-center justify-content-between cursor-pointer mb-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <input class="form-check-input mt-0 addon-option" type="checkbox" value="120000" data-note="Kính cường lực 9D" onchange="syncAddonSelections()">
+                            <div>
+                                <div class="small fw-bold text-dark">📱 Kính cường lực 9D chống nhìn trộm</div>
+                                <div class="text-muted" style="font-size: 11px;">Chống va đập, bảo mật góc nhìn (Giá gốc: 200.000₫)</div>
+                            </div>
+                        </div>
+                        <div class="text-danger fw-bold small">+120.000₫ <s class="text-muted small fw-normal ms-1">200.000₫</s></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="product-actions d-flex gap-2 flex-wrap mt-auto">
+                <form method="post" action="/cart/buy/<?= $product['id'] ?>" class="flex-grow-1" style="min-width:160px" id="buyNowForm">
                     <?= csrf_field() ?>
                     <input type="hidden" name="color" value="<?= !empty($variants) ? htmlspecialchars($variants[0]['color'] . ' / ' . $variants[0]['storage']) : 'Tiêu chuẩn' ?>" class="color-form-input">
                     <input type="hidden" name="variant_id" value="<?= !empty($variants) ? $variants[0]['id'] : '' ?>" class="variant-form-input">
+                    <input type="hidden" name="addon_price" value="0" class="addon-price-form-input">
+                    <input type="hidden" name="addon_notes" value="" class="addon-notes-form-input">
                     <?php if ((int)($product['is_preorder'] ?? 0) === 1): ?>
                         <button type="submit" id="buyNowBtn" class="btn btn-danger w-100 py-3 fw-bold" style="border-radius: var(--radius-sm);"><i class="bi bi-clock me-1"></i> ĐẶT TRƯỚC NGAY</button>
                     <?php else: ?>
                         <button type="submit" id="buyNowBtn" class="btn btn-primary-hades w-100 py-3 fw-bold" style="border-radius: var(--radius-sm);" <?= $stock <= 0 ? 'disabled' : '' ?>>MUA NGAY</button>
                     <?php endif; ?>
                 </form>
-                <form method="post" action="/cart/add/<?= $product['id'] ?>" class="flex-grow-1" style="min-width:180px" id="addToCartForm">
+                <form method="post" action="/cart/add/<?= $product['id'] ?>" class="flex-grow-1" style="min-width:160px" id="addToCartForm">
                     <?= csrf_field() ?>
                     <input type="hidden" name="color" value="<?= !empty($variants) ? htmlspecialchars($variants[0]['color'] . ' / ' . $variants[0]['storage']) : 'Tiêu chuẩn' ?>" class="color-form-input">
                     <input type="hidden" name="variant_id" value="<?= !empty($variants) ? $variants[0]['id'] : '' ?>" class="variant-form-input">
+                    <input type="hidden" name="addon_price" value="0" class="addon-price-form-input">
+                    <input type="hidden" name="addon_notes" value="" class="addon-notes-form-input">
                     <?php if ((int)($product['is_preorder'] ?? 0) === 1): ?>
                         <button type="submit" id="addToCartBtn" class="btn btn-outline-danger w-100 py-3 fw-bold" style="border-width: 2px; border-radius: var(--radius-sm);" <?= $stock <= 0 ? 'disabled' : '' ?>>
-                            <i class="bi bi-bag-plus me-2"></i>THÊM GIỎ HÀNG (ĐẶT TRƯỚC)
+                            <i class="bi bi-bag-plus me-2"></i>THÊM GIỎ HÀNG
                         </button>
                     <?php else: ?>
                         <button type="submit" id="addToCartBtn" class="btn btn-outline-primary w-100 py-3 fw-bold" style="border-width: 2px; border-radius: var(--radius-sm);" <?= $stock <= 0 ? 'disabled' : '' ?>>
@@ -179,6 +239,14 @@ $ogImage = !empty($product['image']) ? imageUrl($product['image']) : '';
                         </button>
                     <?php endif; ?>
                 </form>
+            </div>
+
+            <!-- Nút Trả Góp 0% -->
+            <div class="mt-2">
+                <button type="button" class="btn btn-warning w-100 py-2.5 fw-bold text-dark d-flex flex-column align-items-center justify-content-center shadow-sm" style="border-radius: var(--radius-sm); border: 1px solid #f59e0b; background: linear-gradient(180deg, #fef08a 0%, #facc15 100%);" onclick="openInstallmentModal()" <?= $stock <= 0 ? 'disabled' : '' ?>>
+                    <span class="d-flex align-items-center gap-2 fs-6 fw-bold"><i class="bi bi-percent-circle-fill text-dark fs-5"></i> MUA TRẢ GÓP 0% QUA THẺ / CÔNG TY TÀI CHÍNH</span>
+                    <span style="font-size: 11px; opacity: 0.9; font-weight: 500;">Trả trước từ 0đ • Lãi suất 0% • Duyệt hồ sơ 5 phút online</span>
+                </button>
             </div>
             
             <?php
@@ -221,6 +289,24 @@ $ogImage = !empty($product['image']) ? imageUrl($product['image']) : '';
                     </div>
                 </div>
             </div>
+
+            <?php if (!empty($stores)): ?>
+                <!-- Có sẵn tại siêu thị -->
+                <div class="mt-3 p-3 bg-white rounded-3 border">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="small fw-bold text-dark"><i class="bi bi-geo-alt-fill text-danger me-1"></i> Có sẵn tại <?= count($stores) ?> showroom Hades:</span>
+                        <a href="/pages/dia-chi-cua-hang" class="small text-primary text-decoration-none fw-semibold">Xem bản đồ &rarr;</a>
+                    </div>
+                    <div class="d-flex flex-column gap-1.5 small text-muted" style="max-height: 120px; overflow-y: auto;">
+                        <?php foreach ($stores as $st): ?>
+                            <div class="d-flex align-items-center justify-content-between py-1 border-bottom border-light">
+                                <span class="text-truncate me-2"><i class="bi bi-shop me-1 text-secondary"></i><strong><?= e($st['name']) ?>:</strong> <?= e($st['address']) ?></span>
+                                <span class="badge bg-success-subtle text-success flex-shrink-0" style="font-size: 10px;">Còn hàng</span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -418,6 +504,107 @@ $ogImage = !empty($product['image']) ? imageUrl($product['image']) : '';
     </div>
 <?php endif; ?>
 
+<!-- MODAL BẢNG TÍNH TRẢ GÓP 0% CHUYÊN NGHIỆP -->
+<div class="modal fade" id="installmentModal" tabindex="-1" aria-labelledby="installmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                <div>
+                    <h5 class="modal-title fw-bold" id="installmentModalLabel">
+                        <i class="bi bi-percent-circle-fill text-warning me-2"></i>Bảng Tính Mua Trả Góp 0%
+                    </h5>
+                    <div class="small opacity-75"><?= e($product['name']) ?> • Duyệt hồ sơ nhanh 5 phút online</div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light">
+                <!-- Chọn hình thức trả góp -->
+                <div class="d-flex gap-2 p-1 bg-white rounded-3 border mb-3">
+                    <button type="button" class="btn btn-sm flex-grow-1 fw-bold installment-type-btn active btn-primary py-2" onclick="switchInstallmentType(this, 'financial_company')">
+                        <i class="bi bi-building me-1"></i> Công Ty Tài Chính (Home Credit, Kredivo)
+                    </button>
+                    <button type="button" class="btn btn-sm flex-grow-1 fw-bold installment-type-btn btn-outline-secondary py-2" onclick="switchInstallmentType(this, 'credit_card')">
+                        <i class="bi bi-credit-card-2-front me-1"></i> Thẻ Tín Dụng (25 Ngân Hàng)
+                    </button>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-dark">Chọn số tiền trả trước:</label>
+                        <div class="d-flex gap-2 flex-wrap" id="depositBtnGroup">
+                            <button type="button" class="btn btn-sm btn-outline-primary active deposit-btn flex-grow-1 py-2 fw-semibold" onclick="selectDeposit(this, 0)">0% (0₫)</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary deposit-btn flex-grow-1 py-2 fw-semibold" onclick="selectDeposit(this, 20)">20%</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary deposit-btn flex-grow-1 py-2 fw-semibold" onclick="selectDeposit(this, 30)">30%</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary deposit-btn flex-grow-1 py-2 fw-semibold" onclick="selectDeposit(this, 50)">50%</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-dark">Chọn kỳ hạn trả góp:</label>
+                        <div class="d-flex gap-2 flex-wrap" id="monthBtnGroup">
+                            <button type="button" class="btn btn-sm btn-outline-primary month-btn flex-grow-1 py-2 fw-semibold" onclick="selectMonth(this, 3)">3 Tháng</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary active month-btn flex-grow-1 py-2 fw-semibold" onclick="selectMonth(this, 6)">6 Tháng</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary month-btn flex-grow-1 py-2 fw-semibold" onclick="selectMonth(this, 9)">9 Tháng</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary month-btn flex-grow-1 py-2 fw-semibold" onclick="selectMonth(this, 12)">12 Tháng</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bảng chi tiết tính toán tài chính -->
+                <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted small">Giá sản phẩm (gồm phiên bản & dịch vụ):</span>
+                            <span class="fw-bold fs-6 text-dark" id="modalProductPrice">0₫</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted small">Số tiền cần trả trước (<span id="modalDepositPercent">0%</span>):</span>
+                            <span class="fw-bold text-primary" id="modalDepositAmount">0₫</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted small">Lãi suất trả góp:</span>
+                            <span class="badge bg-success-subtle text-success fs-7">0% (Ưu đãi Hades)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted small">Phí hồ sơ & bảo hiểm:</span>
+                            <span class="badge bg-success-subtle text-success fs-7">Miễn phí 0₫</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                            <span class="text-muted small">Chênh lệch so với mua thẳng:</span>
+                            <span class="fw-bold text-success">0₫</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3">
+                            <div>
+                                <div class="fw-bold fs-5 text-danger mb-0" id="modalMonthlyPayment">0₫ / tháng</div>
+                                <div class="text-muted" style="font-size: 11px;">Góp đều trong <span id="modalPeriodText">6 tháng</span></div>
+                            </div>
+                            <button type="button" class="btn btn-danger py-2.5 px-4 fw-bold shadow-sm" onclick="submitInstallmentOrder()">
+                                ĐẶT MUA TRẢ GÓP &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info border-0 rounded-3 mb-0 small py-2 d-flex align-items-center gap-2">
+                    <i class="bi bi-info-circle-fill text-info fs-6"></i>
+                    <div>
+                        <strong>Thủ tục chuẩn bị:</strong> CCCD gắn chip (duyệt online) hoặc Thẻ tín dụng Visa/Mastercard. Không cần chứng minh thu nhập.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="installmentOrderForm" method="post" action="/cart/buy/<?= $product['id'] ?>" style="display:none">
+    <?= csrf_field() ?>
+    <input type="hidden" name="color" value="" id="instColor">
+    <input type="hidden" name="variant_id" value="" id="instVariant">
+    <input type="hidden" name="addon_price" value="0" id="instAddonPrice">
+    <input type="hidden" name="addon_notes" value="" id="instAddonNotes">
+    <input type="hidden" name="is_installment" value="1">
+    <input type="hidden" name="installment_months" value="6" id="instMonths">
+</form>
+
 <div class="mt-4">
     <a href="javascript:history.back()" class="btn btn-outline-secondary rounded-pill px-4 btn-sm"><i class="bi bi-arrow-left"></i> Quay lại</a>
 </div>
@@ -478,6 +665,103 @@ function selectColor(btn, colorName, filter, index) {
 }
 
 const isPreorderProduct = <?= (int)($product['is_preorder'] ?? 0) ?>;
+let currentProductBasePrice = <?= (int)($product['sale_price'] ?? $product['price'] ?? 0) ?>;
+let currentAddonPrice = 0;
+let currentAddonNotes = '';
+let currentSelectedVariantId = <?= !empty($variants) ? (int)$variants[0]['id'] : 0 ?>;
+let currentSelectedLabel = '<?= !empty($variants) ? addslashes($variants[0]['color'] . ' / ' . $variants[0]['storage']) : 'Tiêu chuẩn' ?>';
+let selectedDepositPercent = 0;
+let selectedInstallmentMonths = 6;
+let installmentModalInstance = null;
+
+function syncAddonSelections() {
+    let totalAddons = 0;
+    let notes = [];
+    document.querySelectorAll('.addon-option:checked').forEach(cb => {
+        totalAddons += parseInt(cb.value) || 0;
+        if (cb.dataset.note) notes.push(cb.dataset.note);
+    });
+    currentAddonPrice = totalAddons;
+    currentAddonNotes = notes.join(', ');
+
+    document.querySelectorAll('.addon-price-form-input').forEach(input => input.value = currentAddonPrice);
+    document.querySelectorAll('.addon-notes-form-input').forEach(input => input.value = currentAddonNotes);
+
+    updateDisplayedPrice();
+}
+
+function updateDisplayedPrice() {
+    const total = currentProductBasePrice + currentAddonPrice;
+    const priceContainer = document.querySelector('.product-price');
+    if (priceContainer) {
+        priceContainer.innerHTML = formatMoney(total) + (currentAddonPrice > 0 ? ' <small style="font-size: 13px; color: #16a34a; font-weight: normal;">(Đã gồm ' + formatMoney(currentAddonPrice) + ' dịch vụ thêm)</small>' : '');
+    }
+}
+
+function openInstallmentModal() {
+    const modalEl = document.getElementById('installmentModal');
+    if (!modalEl) return;
+    if (!installmentModalInstance && typeof bootstrap !== 'undefined') {
+        installmentModalInstance = new bootstrap.Modal(modalEl);
+    }
+    recalculateInstallment();
+    if (installmentModalInstance) {
+        installmentModalInstance.show();
+    }
+}
+
+function selectDeposit(btn, percent) {
+    document.querySelectorAll('#depositBtnGroup .deposit-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedDepositPercent = percent;
+    recalculateInstallment();
+}
+
+function selectMonth(btn, months) {
+    document.querySelectorAll('#monthBtnGroup .month-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedInstallmentMonths = months;
+    recalculateInstallment();
+}
+
+function switchInstallmentType(btn, type) {
+    document.querySelectorAll('.installment-type-btn').forEach(b => {
+        b.classList.remove('active', 'btn-primary');
+        b.classList.add('btn-outline-secondary');
+    });
+    btn.classList.add('active', 'btn-primary');
+    btn.classList.remove('btn-outline-secondary');
+}
+
+function recalculateInstallment() {
+    const total = currentProductBasePrice + currentAddonPrice;
+    const depositAmount = Math.round(total * (selectedDepositPercent / 100));
+    const loanAmount = Math.max(0, total - depositAmount);
+    const monthlyPayment = Math.round(loanAmount / selectedInstallmentMonths);
+
+    const priceEl = document.getElementById('modalProductPrice');
+    const depPctEl = document.getElementById('modalDepositPercent');
+    const depAmtEl = document.getElementById('modalDepositAmount');
+    const monPayEl = document.getElementById('modalMonthlyPayment');
+    const periodEl = document.getElementById('modalPeriodText');
+
+    if (priceEl) priceEl.textContent = formatMoney(total);
+    if (depPctEl) depPctEl.textContent = selectedDepositPercent + '%';
+    if (depAmtEl) depAmtEl.textContent = formatMoney(depositAmount);
+    if (monPayEl) monPayEl.textContent = formatMoney(monthlyPayment) + ' / tháng';
+    if (periodEl) periodEl.textContent = selectedInstallmentMonths + ' tháng';
+}
+
+function submitInstallmentOrder() {
+    const form = document.getElementById('installmentOrderForm');
+    if (!form) return;
+    document.getElementById('instColor').value = currentSelectedLabel;
+    document.getElementById('instVariant').value = currentSelectedVariantId;
+    document.getElementById('instAddonPrice').value = currentAddonPrice;
+    document.getElementById('instAddonNotes').value = currentAddonNotes;
+    document.getElementById('instMonths').value = selectedInstallmentMonths;
+    form.submit();
+}
 
 function selectVariant(btn, variantId, label, price, stock) {
     // Update active variant button
@@ -488,11 +772,12 @@ function selectVariant(btn, variantId, label, price, stock) {
     document.querySelectorAll('.color-form-input').forEach(input => input.value = label);
     document.querySelectorAll('.variant-form-input').forEach(input => input.value = variantId);
     
+    currentProductBasePrice = price;
+    currentSelectedVariantId = variantId;
+    currentSelectedLabel = label;
+
     // Dynamically update the price displayed
-    const priceContainer = document.querySelector('.product-price');
-    if (priceContainer) {
-        priceContainer.innerHTML = formatMoney(price);
-    }
+    updateDisplayedPrice();
     
     // Dynamically update the stock badge
     const badgeContainer = document.querySelector('.col-lg-7 .mb-4');
